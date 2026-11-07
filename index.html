@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Victoria Carbonell Sánchez</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+/* Layout: a technical drawing sheet. Title block (cajetín) on top, a production routing (OP 10 → OP 50) as the career line, then collapsible sections like the notes of a drawing. */
+:root{
+  --paper:#F5F7FA; --sheet:#FFFFFF; --ink:#13233A; --muted:#566781; --line:#D5DCE6; --grid:rgba(19,35,58,.045);
+  --accent:#2B5C8A; --accent-soft:rgba(43,92,138,.09); --chip:#EEF2F7;
+  --display:"Archivo", "Arial Narrow", Arial, sans-serif;
+  --body:"IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --paper:#0C1726; --sheet:#101E31; --ink:#E5ECF5; --muted:#93A4BA; --line:#23364F; --grid:rgba(229,236,245,.035);
+  --accent:#7FB2E5; --accent-soft:rgba(127,178,229,.12); --chip:#16283F; color-scheme:dark } }
+:root[data-theme="dark"]{
+  --paper:#0C1726; --sheet:#101E31; --ink:#E5ECF5; --muted:#93A4BA; --line:#23364F; --grid:rgba(229,236,245,.035);
+  --accent:#7FB2E5; --accent-soft:rgba(127,178,229,.12); --chip:#16283F; color-scheme:dark }
+
+*{box-sizing:border-box}
+body{
+  background-color:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:24px 24px;
+  color:var(--ink); font-family:var(--body); font-size:16px; line-height:1.6;
+  padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px));
+  padding-block:40px 64px;
+}
+a{color:inherit; text-decoration-color:var(--accent); text-underline-offset:3px}
+a:hover{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:2px}
+.sheet{max-width:980px; margin:0 auto; display:grid; gap:28px}
+.mono{font-family:var(--mono); font-size:.78rem; letter-spacing:.04em}
+.label{font-family:var(--mono); font-size:.7rem; text-transform:uppercase; letter-spacing:.12em; color:var(--muted)}
+
+/* Title block */
+.cajetin{background:var(--sheet); border:1.5px solid var(--ink); display:grid; grid-template-columns:1.6fr 1fr 1fr; }
+.cajetin > div{padding:14px 18px; border-right:1px solid var(--line); border-bottom:1px solid var(--line); min-width:0}
+.cajetin > div:nth-child(3n){border-right:0}
+.cell-name{grid-column:1 / -1; border-right:0 !important; padding:26px 18px 22px !important}
+h1{font-family:var(--display); font-variation-settings:"wdth" 118; font-weight:800; font-size:clamp(2rem, 5.4vw, 3.6rem); line-height:1; margin:6px 0 14px; letter-spacing:-.01em; text-transform:uppercase; text-wrap:balance}
+.thesis{font-size:clamp(1.05rem, 2.2vw, 1.3rem); max-width:62ch; margin:0; color:var(--ink)}
+.thesis em{font-style:normal; color:var(--accent); font-weight:600}
+.cell-val{margin-top:4px; font-weight:500}
+.cajetin .last{border-bottom:0}
+.contact-row{display:flex; flex-wrap:wrap; gap:8px 14px; align-items:center; margin-top:6px}
+.btn{font:500 .8rem var(--mono); letter-spacing:.03em; border:1px solid var(--line); background:var(--chip); color:var(--ink); padding:6px 10px; cursor:pointer; border-radius:3px}
+.btn:hover{border-color:var(--accent)}
+.copied{color:var(--accent)}
+
+/* Routing */
+.routing{background:var(--sheet); border:1px solid var(--line); padding:20px 18px 22px}
+.routing h2{margin:0 0 16px}
+.ops{list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(5, minmax(0,1fr)); gap:0}
+.op{position:relative; padding:0 14px 0 0}
+.op::before{content:""; position:absolute; left:0; right:0; top:11px; height:1.5px; background:var(--line)}
+.op:last-child::before{right:auto; width:30%}
+.dot{position:relative; width:24px; height:24px; border:1.5px solid var(--ink); background:var(--sheet); border-radius:50%; display:grid; place-items:center}
+.op.now .dot{border-color:var(--accent); background:var(--accent)}
+.op.now .dot::after{content:""; width:8px; height:8px; border-radius:50%; background:var(--sheet)}
+.op .mono{display:block; margin-top:10px; color:var(--accent); font-weight:500}
+.op strong{display:block; font-size:.95rem; line-height:1.3; margin-top:2px}
+.op span.when{display:block; font-size:.82rem; color:var(--muted)}
+
+/* Sections */
+h2{font-family:var(--display); font-variation-settings:"wdth" 100; font-weight:750; font-size:1.05rem; text-transform:uppercase; letter-spacing:.08em; margin:0}
+.toolbar{display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap}
+details.sec{background:var(--sheet); border:1px solid var(--line)}
+details.sec > summary{list-style:none; cursor:pointer; display:flex; align-items:baseline; justify-content:space-between; gap:12px; padding:16px 18px; border-bottom:1px solid transparent}
+details.sec[open] > summary{border-bottom-color:var(--line)}
+summary::-webkit-details-marker{display:none}
+.sec-sum{display:flex; align-items:baseline; gap:12px; min-width:0; flex-wrap:wrap}
+.chev{font-family:var(--mono); color:var(--muted); transition:transform .2s}
+details[open] > summary .chev{transform:rotate(90deg)}
+.sec-body{padding:6px 18px 18px; display:grid; gap:0}
+
+.item{border-bottom:1px dashed var(--line)}
+.item:last-child{border-bottom:0}
+.item > summary{list-style:none; cursor:pointer; display:grid; grid-template-columns:1fr auto; gap:4px 16px; padding:14px 0; align-items:baseline}
+.item > summary:hover h3{color:var(--accent)}
+h3{font-family:var(--body); font-weight:600; font-size:1.02rem; margin:0; transition:color .15s}
+.org{color:var(--muted); font-size:.92rem; grid-column:1}
+.dates{grid-row:1; grid-column:2; font-family:var(--mono); font-size:.76rem; color:var(--muted); white-space:nowrap}
+.item-body{padding:0 0 16px; max-width:72ch}
+.item-body p{margin:0 0 10px}
+.item-body ul{margin:0 0 10px; padding-left:1.1em}
+.item-body li{margin:3px 0}
+.item-body li::marker{color:var(--accent)}
+.hl{background:var(--accent-soft); border-left:2px solid var(--accent); padding:10px 12px; margin:10px 0 4px}
+.tags{display:flex; flex-wrap:wrap; gap:6px; margin-top:8px}
+.tag{font-family:var(--mono); font-size:.72rem; background:var(--chip); border:1px solid var(--line); padding:3px 8px; border-radius:3px}
+
+/* Projects */
+.gallery{display:grid; grid-template-columns:1.25fr 1fr; gap:10px; margin:12px 0}
+.gallery button{padding:0; border:1px solid var(--line); background:var(--paper); cursor:zoom-in; display:block; overflow:hidden}
+.gallery img{display:block; width:100%; height:100%; object-fit:cover; object-position:top}
+.gallery .g-main{grid-row:span 2; aspect-ratio:3/4}
+.gallery .g-side{aspect-ratio:16/10}
+.gallery .g-side img{object-fit:contain; background:#fff}
+.caption{font-size:.8rem; color:var(--muted)}
+.tests{display:grid; gap:8px; margin:12px 0}
+.test{display:grid; grid-template-columns:120px 1fr; gap:12px; border:1px solid var(--line); padding:10px 12px; background:var(--paper)}
+.test .kind{font-family:var(--mono); font-size:.72rem; letter-spacing:.06em}
+.test .kind b{display:block; color:var(--accent); font-size:.8rem}
+.test p{margin:0}
+.test q{font-style:italic}
+
+/* Grids */
+.cols{display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:18px 28px; padding-top:8px}
+.cols h4{margin:0 0 6px; font-family:var(--mono); font-size:.72rem; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); font-weight:500}
+.cert{display:grid; grid-template-columns:1fr auto; gap:2px 12px; padding:7px 0; border-bottom:1px dashed var(--line)}
+.cert:last-child{border-bottom:0}
+.cert span:last-child{font-family:var(--mono); font-size:.74rem; color:var(--muted)}
+.lang{display:flex; justify-content:space-between; gap:12px; padding:8px 0; border-bottom:1px dashed var(--line)}
+
+footer{display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; color:var(--muted)}
+
+dialog{border:1px solid var(--line); padding:0; max-width:min(92vw, 1000px); background:var(--sheet); color:var(--ink)}
+dialog::backdrop{background:rgba(8,15,26,.7)}
+dialog img{display:block; max-height:82vh; width:auto; margin:auto}
+dialog form{display:flex; justify-content:space-between; align-items:center; gap:10px; padding:10px 12px; border-top:1px solid var(--line)}
+
+@media (max-width:760px){
+  .cajetin{grid-template-columns:1fr 1fr}
+  .cajetin > div{border-right:1px solid var(--line) !important}
+  .cajetin > div:nth-child(2n+1):not(.cell-name){border-right:1px solid var(--line) !important}
+  .cajetin > div:nth-child(even){border-right:0 !important}
+  .cell-wide, .cell-loc{grid-column:1 / -1; border-right:0 !important}
+  .ops{grid-template-columns:1fr; gap:14px}
+  .op{display:grid; grid-template-columns:24px 1fr; gap:0 12px; padding:0}
+  .op::before{left:11px; right:auto; top:24px; bottom:-14px; width:1.5px; height:auto}
+  .op:last-child::before{display:none}
+  .op .mono{margin-top:3px}
+  .op > *:not(.dot){grid-column:2}
+  .op .dot{grid-row:1 / span 3}
+  .cols{grid-template-columns:1fr}
+  .gallery{grid-template-columns:1fr}
+  .gallery .g-main{grid-row:auto}
+  .test{grid-template-columns:1fr; gap:4px}
+}
+@media (prefers-reduced-motion:reduce){ *{transition:none !important} }
+</style>
+<meta name="description" content="CV de Victoria Carbonell Sánchez · Consultora Odoo · ERP e IA aplicada">
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="cajetin" aria-label="Datos principales">
+    <div class="cell-name">
+      <span class="label">Ingeniera industrial · Consultora ERP</span>
+      <h1>Victoria Carbonell Sánchez</h1>
+      <p class="thesis">Implanto Odoo en empresas industriales y de distribución, y conecto sus sistemas con <em>IA aplicada a procesos de negocio</em>.</p>
+    </div>
+    <div>
+      <span class="label">Puesto actual</span>
+      <div class="cell-val">Consultora ERP en Mirandir<br><span class="caption">Odoo Silver Partner</span></div>
+    </div>
+    <div>
+      <span class="label">Formación</span>
+      <div class="cell-val">Máster en Ingeniería Industrial<br><span class="caption">UPCT · en curso</span></div>
+    </div>
+    <div class="cell-loc">
+      <span class="label">Ubicación</span>
+      <div class="cell-val">Murcia · Cartagena<br><span class="caption">Presencial o híbrido</span></div>
+    </div>
+    <div class="cell-wide last">
+      <span class="label">Contacto</span>
+      <div class="contact-row">
+        <span class="mono" id="mail">victoria220503@gmail.com</span>
+        <button class="btn" id="copy-mail" type="button">Copiar email</button>
+        <a class="mono" href="https://www.linkedin.com/in/victoriacarbonellsanchez/" target="_blank" rel="noopener">LinkedIn ↗</a>
+      </div>
+    </div>
+    <div class="last">
+      <span class="label">Idiomas</span>
+      <div class="cell-val">Inglés C2 · Francés B1</div>
+    </div>
+    <div class="last">
+      <span class="label">Revisión</span>
+      <div class="cell-val mono" style="font-size:.9rem">Rev. 11 · nov 2026</div>
+    </div>
+  </header>
+
+  <section class="routing" aria-labelledby="ruta">
+    <h2 id="ruta">Hoja de ruta</h2>
+    <ol class="ops">
+      <li class="op"><div class="dot"></div><span class="mono">OP 10</span><strong>Prácticas en LEMAR</strong><span class="when">jun – ago 2024</span></li>
+      <li class="op"><div class="dot"></div><span class="mono">OP 20</span><strong>Beca de colaboración UPCT</strong><span class="when">nov 2024 – jun 2025</span></li>
+      <li class="op"><div class="dot"></div><span class="mono">OP 30</span><strong>TFG desplegado en Azure</strong><span class="when">jul 2025</span></li>
+      <li class="op"><div class="dot"></div><span class="mono">OP 40</span><strong>Consultora ERP en Mirandir</strong><span class="when">jul 2025 – hoy</span></li>
+      <li class="op now"><div class="dot"></div><span class="mono">OP 50</span><strong>ERP + IA: integraciones vía MCP</strong><span class="when">en curso</span></li>
+    </ol>
+  </section>
+
+  <div class="toolbar">
+    <span class="label">Pulsa cada apartado para ver el detalle</span>
+    <button class="btn" id="toggle-all" type="button">Desplegar todo</button>
+  </div>
+
+  <details class="sec" open>
+    <summary><span class="sec-sum"><h2>Experiencia</h2><span class="label">3 puestos</span></span><span class="chev">›</span></summary>
+    <div class="sec-body">
+
+      <details class="item" open>
+        <summary><h3>Consultora ERP</h3><span class="dates">jul 2025 – actualidad</span><span class="org">Mirandir (antes Onmi Engineering) · Murcia, híbrido</span></summary>
+        <div class="item-body">
+          <p>Llevo una cartera propia de clientes de los sectores industrial, agroalimentario, distribución, e-commerce y servicio técnico, desde el análisis de procesos hasta el desarrollo a medida y el soporte en explotación.</p>
+          <ul>
+            <li>Análisis y rediseño de procesos con los responsables de producción, almacén, compras, ventas y administración.</li>
+            <li>Configuración de fabricación (listas de materiales, rutas, órdenes de producción, trazabilidad por lote y número de serie), calidad y logística, incluidos almacenes de consigna.</li>
+            <li>Desarrollo de módulos en Python sobre el framework de Odoo, con Git y entornos de desarrollo, pruebas y producción.</li>
+            <li>Integraciones con aplicaciones externas mediante servicios web, plataformas de e-commerce y operadores logísticos.</li>
+            <li>Migraciones de versión, migración de datos, informes y cuadros de mando.</li>
+            <li>Resolución de incidencias con análisis de causa raíz y formación a usuarios.</li>
+          </ul>
+          <p class="hl">He conectado sistemas Odoo de clientes con asistentes de IA (LLM) mediante MCP para que puedan consultar y trabajar con los datos de su ERP en lenguaje natural.</p>
+          <div class="tags"><span class="tag">Odoo</span><span class="tag">Python</span><span class="tag">MCP</span><span class="tag">Git</span><span class="tag">Integraciones</span><span class="tag">MRP</span></div>
+        </div>
+      </details>
+
+      <details class="item">
+        <summary><h3>Becaria de colaboración</h3><span class="dates">nov 2024 – jun 2025</span><span class="org">Dpto. de Automática, Ingeniería Eléctrica y Tecnología Electrónica · UPCT</span></summary>
+        <div class="item-body">
+          <p>Beca del Ministerio de Educación en el proyecto «Automatización de procesos en empresas de servicios de ingeniería mediante desarrollo de software en la nube», continuación de mis prácticas en LEMAR.</p>
+          <ul>
+            <li>Evolución de la aplicación web de gestión de inspecciones.</li>
+            <li>Despliegue en Microsoft Azure con Docker y Azure Container Registry, y CI/CD con GitHub Actions.</li>
+            <li>Pruebas funcionales y documentación técnica.</li>
+            <li>Diseño de una PCB como material docente para la asignatura de Electrónica Industrial.</li>
+          </ul>
+          <div class="tags"><span class="tag">Azure</span><span class="tag">Docker</span><span class="tag">GitHub Actions</span><span class="tag">Diseño de PCB</span></div>
+        </div>
+      </details>
+
+      <details class="item">
+        <summary><h3>Estudiante en prácticas</h3><span class="dates">jun – ago 2024</span><span class="org">Cloud Incubator HUB · LEMAR, laboratorio acreditado por ENAC</span></summary>
+        <div class="item-body">
+          <p>Prácticas en el departamento informático de LEMAR, laboratorio de ensayos de máquinas recreativas acreditado según ISO/IEC 17025, desarrollando una aplicación web para la gestión de inspecciones.</p>
+          <ul>
+            <li>Formación en la norma ISO/IEC 17025 y participación en ensayos acreditados, para entender el proceso antes de digitalizarlo.</li>
+            <li>Desarrollo de la interfaz y la lógica de negocio con Python (Flask, Streamlit), API REST y MySQL.</li>
+          </ul>
+          <div class="tags"><span class="tag">Flask</span><span class="tag">Streamlit</span><span class="tag">MySQL</span><span class="tag">ISO/IEC 17025</span></div>
+        </div>
+      </details>
+
+    </div>
+  </details>
+
+  <details class="sec" open>
+    <summary><span class="sec-sum"><h2>Proyectos</h2><span class="label">2 proyectos</span></span><span class="chev">›</span></summary>
+    <div class="sec-body">
+
+      <details class="item" open>
+        <summary><h3>Aplicación web para automatizar inspecciones de máquinas recreativas (TFG)</h3><span class="dates">2024 – 2025</span><span class="org">Grado en Ingeniería en Tecnologías Industriales · UPCT · Laboratorio ISO 17025</span></summary>
+        <div class="item-body">
+          <p>Sustituye la redacción manual de informes de inspección por un formulario guiado que valida los datos, genera el informe en PDF y lo envía por correo al cliente.</p>
+          <div class="gallery">
+            <button class="g-main" type="button" data-full="img/tfg_formulario.jpg" data-cap="Formulario de inspección con sesión iniciada"><img src="img/tfg_formulario.jpg" alt="Formulario de inspección de la aplicación LEMAR"></button>
+            <button class="g-side" type="button" data-full="img/tfg_login.jpg" data-cap="Acceso con autenticación por token JWT"><img src="img/tfg_login.jpg" alt="Pantalla de inicio de sesión de la aplicación"></button>
+            <button class="g-side" type="button" data-full="img/tfg_arquitectura.jpg" data-cap="Arquitectura: frontend Streamlit, backend Flask con API REST y MySQL"><img src="img/tfg_arquitectura.jpg" alt="Diagrama de arquitectura de la aplicación"></button>
+          </div>
+          <ul>
+            <li>Frontend en Streamlit y backend en Flask con API REST, autenticación JWT y MySQL.</li>
+            <li>Pruebas unitarias, de integración y de rendimiento, y verificación de los requisitos de la norma.</li>
+            <li>Despliegue en Azure App Service, Azure Database for MySQL y Container Registry, con CI/CD en GitHub Actions.</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="item">
+        <summary><h3>Comparativa de modelos base, instruct y de razonamiento</h3><span class="dates">nov 2026</span><span class="org">Experimento propio en Hugging Face</span></summary>
+        <div class="item-body">
+          <p>Tres preguntas sencillas a tres tipos de modelo para ver en la práctica qué cambia entre preentrenar, ajustar a instrucciones y entrenar para razonar.</p>
+          <div class="tests">
+            <div class="test"><div class="kind"><b>BASE</b><a href="https://huggingface.co/meta-llama/Llama-3.2-3B" target="_blank" rel="noopener">Llama 3.2 3B</a></div><p>Le dije <q>Hola</q> y empezó una receta en inglés. Continúa texto, no conversa.</p></div>
+            <div class="test"><div class="kind"><b>INSTRUCT</b><a href="https://huggingface.co/meta-llama/Llama-3.2-3B-Instruct" target="_blank" rel="noopener">Llama 3.2 3B Instruct</a></div><p>Explicó un motor de combustión «para un niño de 10 años», pero con errores técnicos. Seguir instrucciones no garantiza acertar.</p></div>
+            <div class="test"><div class="kind"><b>REASONING</b><a href="https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-7B" target="_blank" rel="noopener">DeepSeek R1 Distill Qwen 7B</a></div><p>Acertó un problema de lógica con un razonamiento que partía de una suposición falsa. Una respuesta correcta no implica un razonamiento correcto.</p></div>
+          </div>
+          <p class="caption">Pruebas exploratorias con ejemplos concretos, no un benchmark. <a href="https://www.linkedin.com/feed/update/urn:li:activity:7523410860556632066/" target="_blank" rel="noopener">Ver la publicación ↗</a></p>
+        </div>
+      </details>
+
+    </div>
+  </details>
+
+  <details class="sec">
+    <summary><span class="sec-sum"><h2>Formación</h2><span class="label">UPCT</span></span><span class="chev">›</span></summary>
+    <div class="sec-body">
+      <details class="item" open>
+        <summary><h3>Máster Universitario en Ingeniería Industrial</h3><span class="dates">2025 – actualidad</span><span class="org">Universidad Politécnica de Cartagena</span></summary>
+        <div class="item-body"><p>En curso, compaginado con el trabajo a jornada completa.</p></div>
+      </details>
+      <details class="item" open>
+        <summary><h3>Grado en Ingeniería en Tecnologías Industriales</h3><span class="dates">2021 – 2025</span><span class="org">Universidad Politécnica de Cartagena</span></summary>
+        <div class="item-body"><p>Nota media 8,21 · 6 matrículas de honor.</p></div>
+      </details>
+      <details class="item">
+        <summary><h3>Bachillerato científico-tecnológico</h3><span class="dates">2019 – 2021</span><span class="org">Colegio de Fomento Monteagudo-Nelva</span></summary>
+        <div class="item-body"><p>Nota 10, matrícula de honor y Premio Extraordinario de Bachillerato.</p></div>
+      </details>
+    </div>
+  </details>
+
+  <details class="sec">
+    <summary><span class="sec-sum"><h2>Certificaciones</h2><span class="label">8 de Anthropic Academy</span></span><span class="chev">›</span></summary>
+    <div class="sec-body">
+      <div class="cols">
+        <div>
+          <h4>Anthropic Academy</h4>
+          <div class="cert"><span>Introduction to Agent Skills</span><span>ago 2026</span></div>
+          <div class="cert"><span>Claude Platform 101</span><span>ago 2026</span></div>
+          <div class="cert"><span>Claude Code in Action</span><span>jul 2026</span></div>
+          <div class="cert"><span>Claude Code 101</span><span>jul 2026</span></div>
+          <div class="cert"><span>Introduction to Claude Cowork</span><span>jul 2026</span></div>
+          <div class="cert"><span>AI Capabilities and Limitations</span><span>jul 2026</span></div>
+          <div class="cert"><span>AI Fluency: Framework &amp; Foundations</span><span>jul 2026</span></div>
+          <div class="cert"><span>Claude 101</span><span>jun 2026</span></div>
+        </div>
+        <div>
+          <h4>Otras</h4>
+          <div class="cert"><span>CCS-AI: Generative AI Foundations · PUE Academy y Microsoft</span><span>sept 2025</span></div>
+          <div class="cert"><span>Elements of AI · Universidad de Helsinki</span><span>jul 2024</span></div>
+          <div class="cert"><span>Cambridge C2 Proficiency (CPE)</span><span>nov 2021</span></div>
+          <div class="cert"><span>DELF B1</span><span>jul 2021</span></div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <details class="sec">
+    <summary><span class="sec-sum"><h2>Competencias</h2><span class="label">4 áreas</span></span><span class="chev">›</span></summary>
+    <div class="sec-body">
+      <div class="cols">
+        <div><h4>ERP y procesos</h4><div class="tags"><span class="tag">Odoo (MRP, inventario, compras, ventas, calidad)</span><span class="tag">Análisis de procesos</span><span class="tag">Migración de datos</span><span class="tag">Formación a usuarios</span></div></div>
+        <div><h4>IA aplicada</h4><div class="tags"><span class="tag">LLM</span><span class="tag">MCP</span><span class="tag">Claude Code</span><span class="tag">Agentes</span><span class="tag">Hugging Face</span></div></div>
+        <div><h4>Desarrollo y despliegue</h4><div class="tags"><span class="tag">Python</span><span class="tag">Flask</span><span class="tag">Streamlit</span><span class="tag">API REST</span><span class="tag">MySQL</span><span class="tag">Git</span><span class="tag">Docker</span><span class="tag">Azure</span><span class="tag">GitHub Actions</span></div></div>
+        <div><h4>Ingeniería</h4><div class="tags"><span class="tag">AutoCAD</span><span class="tag">SolidWorks</span><span class="tag">Ansys</span><span class="tag">CYPE</span><span class="tag">ISO/IEC 17025</span></div></div>
+      </div>
+    </div>
+  </details>
+
+  <details class="sec">
+    <summary><span class="sec-sum"><h2>Idiomas y voluntariado</h2></span><span class="chev">›</span></summary>
+    <div class="sec-body">
+      <div class="cols">
+        <div>
+          <h4>Idiomas</h4>
+          <div class="lang"><span>Español</span><span class="mono">Nativo</span></div>
+          <div class="lang"><span>Inglés</span><span class="mono">C2 · Cambridge CPE</span></div>
+          <div class="lang"><span>Francés</span><span class="mono">B1 · DELF</span></div>
+        </div>
+        <div>
+          <h4>Voluntariado</h4>
+          <div class="cert"><span>Campamento urbano socioeducativo con menores · Fundación FADE</span><span>2022</span></div>
+          <div class="cert"><span>Recogida de alimentos, campaña de Navidad · Cáritas</span><span>2022</span></div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <footer class="mono"><span>Victoria Carbonell Sánchez · CV interactivo</span><span>Rev. 11 · noviembre 2026</span></footer>
+</main>
+
+<dialog id="viewer">
+  <img id="viewer-img" alt="">
+  <form method="dialog"><span class="caption" id="viewer-cap"></span><button class="btn" type="submit">Cerrar</button></form>
+</dialog>
+
+<script>
+(function(){
+  var copyBtn=document.getElementById('copy-mail');
+  copyBtn.addEventListener('click',function(){
+    var t=document.getElementById('mail').textContent;
+    var done=function(){copyBtn.textContent='Copiado'; copyBtn.classList.add('copied'); setTimeout(function(){copyBtn.textContent='Copiar email'; copyBtn.classList.remove('copied');},1800);};
+    var fallback=function(){var r=document.createRange(); r.selectNodeContents(document.getElementById('mail')); var s=getSelection(); s.removeAllRanges(); s.addRange(r); copyBtn.textContent='Selecciónalo y copia';};
+    try{ navigator.clipboard.writeText(t).then(done,fallback);}catch(e){fallback();}
+  });
+
+  var all=document.getElementById('toggle-all');
+  all.addEventListener('click',function(){
+    var ds=[].slice.call(document.querySelectorAll('details'));
+    var openAll=ds.some(function(d){return !d.open;});
+    ds.forEach(function(d){d.open=openAll;});
+    all.textContent=openAll?'Contraer todo':'Desplegar todo';
+  });
+
+  var dlg=document.getElementById('viewer'), img=document.getElementById('viewer-img'), cap=document.getElementById('viewer-cap');
+  document.querySelectorAll('.gallery button').forEach(function(b){
+    b.addEventListener('click',function(){
+      img.src=b.dataset.full; img.alt=b.querySelector('img').alt; cap.textContent=b.dataset.cap;
+      if(dlg.showModal){dlg.showModal();}
+    });
+  });
+  dlg.addEventListener('click',function(e){ if(e.target===dlg) dlg.close(); });
+})();
+</script>
+</body>
+</html>
