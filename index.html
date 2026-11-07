@@ -59,7 +59,13 @@ a:hover{color:var(--accent)}
 .cajetin{background:var(--sheet); border:1.5px solid var(--ink); display:grid; grid-template-columns:1.6fr 1fr 1fr; }
 .cajetin > div{padding:14px 18px; border-right:1px solid var(--line); border-bottom:1px solid var(--line); min-width:0}
 .cajetin > div:nth-child(3n){border-right:0}
-.cell-name{grid-column:1 / -1; border-right:0 !important; padding:26px 18px 22px !important}
+.cell-name{grid-column:1 / -1; border-right:0 !important; padding:26px 18px 22px !important; position:relative}
+.lang-switch{position:absolute; top:14px; right:14px; display:flex; border:1px solid var(--line); border-radius:3px; overflow:hidden}
+.lang-switch button{font:500 .72rem var(--mono); letter-spacing:.08em; padding:5px 9px; border:0; background:none; color:var(--muted); cursor:pointer}
+.lang-switch button + button{border-left:1px solid var(--line)}
+.cell-name > .label{display:block; padding-right:96px}
+.lang-switch button[aria-pressed="true"]{background:var(--accent); color:var(--sheet)}
+.lang-switch button:not([aria-pressed="true"]):hover{color:var(--accent)}
 h1{font-family:var(--display); font-variation-settings:"wdth" 118; font-weight:800; font-size:clamp(2rem, 5.4vw, 3.6rem); line-height:1; margin:6px 0 14px; letter-spacing:-.01em; text-transform:uppercase; text-wrap:balance}
 .thesis{font-size:clamp(1.05rem, 2.2vw, 1.3rem); max-width:62ch; margin:0; color:var(--ink)}
 .thesis em{font-style:normal; color:var(--accent); font-weight:600}
@@ -173,6 +179,7 @@ dialog form{display:flex; justify-content:space-between; align-items:center; gap
 
   <header class="cajetin" aria-label="Datos principales">
     <div class="cell-name">
+      <div class="lang-switch" role="group" aria-label="Idioma / Language"><button type="button" data-lang="es" aria-pressed="true">ES</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div>
       <span class="label">Ingeniera industrial · Consultora ERP</span>
       <h1>Victoria Carbonell Sánchez</h1>
       <p class="thesis">Implanto Odoo en empresas industriales y de distribución, y conecto sus sistemas con <em>IA aplicada a procesos de negocio</em>.</p>
@@ -223,7 +230,7 @@ dialog form{display:flex; justify-content:space-between; align-items:center; gap
     <button class="btn" id="toggle-all" type="button">Desplegar todo</button>
   </div>
 
-  <details class="sec" open>
+  <details class="sec">
     <summary><span class="sec-sum"><h2>Experiencia</h2><span class="label">3 puestos</span></span><span class="chev">›</span></summary>
     <div class="sec-body">
 
@@ -273,7 +280,7 @@ dialog form{display:flex; justify-content:space-between; align-items:center; gap
     </div>
   </details>
 
-  <details class="sec" open>
+  <details class="sec">
     <summary><span class="sec-sum"><h2>Proyectos</h2><span class="label">2 proyectos</span></span><span class="chev">›</span></summary>
     <div class="sec-body">
 
@@ -399,8 +406,8 @@ dialog form{display:flex; justify-content:space-between; align-items:center; gap
   copyBtn.addEventListener('click',function(){
     var t=document.getElementById('mail').textContent;
     var icon=copyBtn.innerHTML;
-    var done=function(){copyBtn.innerHTML='<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>'; copyBtn.classList.add('copied'); copyBtn.setAttribute('aria-label','Email copiado'); copyBtn.title='Copiado'; setTimeout(function(){copyBtn.innerHTML=icon; copyBtn.classList.remove('copied'); copyBtn.setAttribute('aria-label','Copiar email'); copyBtn.title='Copiar email';},1800);};
-    var fallback=function(){var r=document.createRange(); r.selectNodeContents(document.getElementById('mail')); var s=getSelection(); s.removeAllRanges(); s.addRange(r); copyBtn.title='Selecciónalo y copia';};
+    var done=function(){copyBtn.innerHTML='<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>'; copyBtn.classList.add('copied'); copyBtn.setAttribute('aria-label',T('copied')); copyBtn.title=T('copied'); setTimeout(function(){copyBtn.innerHTML=icon; copyBtn.classList.remove('copied'); copyBtn.setAttribute('aria-label',T('copy')); copyBtn.title=T('copy');},1800);};
+    var fallback=function(){var r=document.createRange(); r.selectNodeContents(document.getElementById('mail')); var s=getSelection(); s.removeAllRanges(); s.addRange(r); copyBtn.title=T('select');};
     try{ navigator.clipboard.writeText(t).then(done,fallback);}catch(e){fallback();}
   });
 
@@ -409,7 +416,7 @@ dialog form{display:flex; justify-content:space-between; align-items:center; gap
     var ds=[].slice.call(document.querySelectorAll('details'));
     var openAll=ds.some(function(d){return !d.open;});
     ds.forEach(function(d){d.open=openAll;});
-    all.textContent=openAll?'Contraer todo':'Desplegar todo';
+    all.textContent=T(openAll?'collapse':'expand');
   });
 
   var dlg=document.getElementById('viewer'), img=document.getElementById('viewer-img'), cap=document.getElementById('viewer-cap');
@@ -420,6 +427,150 @@ dialog form{display:flex; justify-content:space-between; align-items:center; gap
     });
   });
   dlg.addEventListener('click',function(e){ if(e.target===dlg) dlg.close(); });
+
+  /* ES/EN: Spanish lives in the HTML; English is swapped in from this dictionary. */
+  var EN={
+"Ingeniera industrial · Consultora ERP": "Industrial engineer · ERP consultant",
+"Implanto Odoo en empresas industriales y de distribución, y conecto sus sistemas con <em>IA aplicada a procesos de negocio</em>.": "I implement Odoo for manufacturing and distribution companies, and connect their systems with <em>AI applied to business processes</em>.",
+"Puesto actual": "Current role",
+"Consultora ERP en Mirandir<br><span class=\"caption\">Odoo Silver Partner</span>": "ERP consultant at Mirandir<br><span class=\"caption\">Odoo Silver Partner</span>",
+"Formación": "Education",
+"Máster en Ingeniería Industrial<br><span class=\"caption\">UPCT · en curso</span>": "Master's in Industrial Engineering<br><span class=\"caption\">UPCT · in progress</span>",
+"Ubicación": "Location",
+"Murcia · Cartagena<br><span class=\"caption\">Presencial o híbrido</span>": "Murcia · Cartagena, Spain<br><span class=\"caption\">On-site or hybrid</span>",
+"Contacto": "Contact",
+"Descargar CV ↘": "Download CV (Spanish) ↘",
+"Idiomas": "Languages",
+"Inglés C2 · Francés B1": "English C2 · French B1",
+"Hoja de ruta": "Roadmap",
+"Prácticas en LEMAR": "Internship at LEMAR",
+"jun – ago 2024": "Jun – Aug 2024",
+"Beca de colaboración UPCT": "Research grant at UPCT",
+"nov 2024 – jun 2025": "Nov 2024 – Jun 2025",
+"TFG desplegado en Azure": "Bachelor's thesis deployed on Azure",
+"jul 2025": "Jul 2025",
+"Consultora ERP en Mirandir": "ERP consultant at Mirandir",
+"jul 2025 – hoy": "Jul 2025 – today",
+"ERP + IA: integraciones vía MCP": "ERP + AI: integrations via MCP",
+"en curso": "in progress",
+"Pulsa cada apartado para ver el detalle": "Click each section to see the details",
+"Experiencia": "Experience",
+"3 puestos": "3 roles",
+"Consultora ERP": "ERP consultant",
+"jul 2025 – actualidad": "Jul 2025 – present",
+"Mirandir (antes Onmi Engineering) · Murcia, híbrido": "Mirandir (formerly Onmi Engineering) · Murcia, hybrid",
+"Llevo una cartera propia de clientes de los sectores industrial, agroalimentario, distribución, e-commerce y servicio técnico, desde el análisis de procesos hasta el desarrollo a medida y el soporte en explotación.": "I manage my own portfolio of clients in manufacturing, food and agriculture, distribution, e-commerce and technical services, from process analysis to custom development and post-go-live support.",
+"Análisis y rediseño de procesos con los responsables de producción, almacén, compras, ventas y administración.": "Process analysis and redesign with production, warehouse, purchasing, sales and finance managers.",
+"Configuración de fabricación (listas de materiales, rutas, órdenes de producción, trazabilidad por lote y número de serie), calidad y logística, incluidos almacenes de consigna.": "Manufacturing setup (bills of materials, routings, manufacturing orders, lot and serial number traceability), quality and logistics, including consignment warehouses.",
+"Desarrollo de módulos en Python sobre el framework de Odoo, con Git y entornos de desarrollo, pruebas y producción.": "Custom Python modules on the Odoo framework, using Git and development, staging and production environments.",
+"Integraciones con aplicaciones externas mediante servicios web, plataformas de e-commerce y operadores logísticos.": "Integrations with external applications through web services, e-commerce platforms and logistics providers.",
+"Migraciones de versión, migración de datos, informes y cuadros de mando.": "Version upgrades, data migration, reports and dashboards.",
+"Resolución de incidencias con análisis de causa raíz y formación a usuarios.": "Issue resolution with root cause analysis, and user training.",
+"He conectado sistemas Odoo de clientes con asistentes de IA (LLM) mediante MCP para que puedan consultar y trabajar con los datos de su ERP en lenguaje natural.": "I've connected clients' Odoo systems to AI assistants (LLMs) via MCP, so they can query and work with their ERP data in natural language.",
+"Integraciones": "Integrations",
+"Becaria de colaboración": "Research grant holder",
+"Dpto. de Automática, Ingeniería Eléctrica y Tecnología Electrónica · UPCT": "Dept. of Automation, Electrical Engineering and Electronic Technology · UPCT",
+"Beca del Ministerio de Educación en el proyecto «Automatización de procesos en empresas de servicios de ingeniería mediante desarrollo de software en la nube», continuación de mis prácticas en LEMAR.": "Grant from the Spanish Ministry of Education for the project “Process automation in engineering services companies through cloud software development”, a continuation of my internship at LEMAR.",
+"Evolución de la aplicación web de gestión de inspecciones.": "Further development of the inspection management web app.",
+"Despliegue en Microsoft Azure con Docker y Azure Container Registry, y CI/CD con GitHub Actions.": "Deployment on Microsoft Azure with Docker and Azure Container Registry, and CI/CD with GitHub Actions.",
+"Pruebas funcionales y documentación técnica.": "Functional testing and technical documentation.",
+"Diseño de una PCB como material docente para la asignatura de Electrónica Industrial.": "Design of a PCB as teaching material for the Industrial Electronics course.",
+"Diseño de PCB": "PCB design",
+"Estudiante en prácticas": "Intern",
+"Cloud Incubator HUB · LEMAR, laboratorio acreditado por ENAC": "Cloud Incubator HUB · LEMAR, ENAC-accredited laboratory",
+"Prácticas en el departamento informático de LEMAR, laboratorio de ensayos de máquinas recreativas acreditado según ISO/IEC 17025, desarrollando una aplicación web para la gestión de inspecciones.": "Internship in the IT department of LEMAR, an ISO/IEC 17025 accredited testing laboratory for gaming machines, building a web app to manage inspections.",
+"Formación en la norma ISO/IEC 17025 y participación en ensayos acreditados, para entender el proceso antes de digitalizarlo.": "Training in ISO/IEC 17025 and hands-on work in accredited tests, to understand the process before digitalising it.",
+"Desarrollo de la interfaz y la lógica de negocio con Python (Flask, Streamlit), API REST y MySQL.": "Development of the interface and business logic with Python (Flask, Streamlit), a REST API and MySQL.",
+"Proyectos": "Projects",
+"2 proyectos": "2 projects",
+"Aplicación web para automatizar inspecciones de máquinas recreativas (TFG)": "Web app to automate gaming machine inspections (Bachelor's thesis)",
+"Grado en Ingeniería en Tecnologías Industriales · UPCT · Laboratorio ISO 17025": "Bachelor's in Industrial Technology Engineering · UPCT · ISO 17025 laboratory",
+"Sustituye la redacción manual de informes de inspección por un formulario guiado que valida los datos, genera el informe en PDF y lo envía por correo al cliente.": "Replaces manually written inspection reports with a guided form that validates the data, generates the PDF report and emails it to the client.",
+"Frontend en Streamlit y backend en Flask con API REST, autenticación JWT y MySQL.": "Streamlit frontend and Flask backend with a REST API, JWT authentication and MySQL.",
+"Pruebas unitarias, de integración y de rendimiento, y verificación de los requisitos de la norma.": "Unit, integration and performance tests, and verification of the standard's requirements.",
+"Despliegue en Azure App Service, Azure Database for MySQL y Container Registry, con CI/CD en GitHub Actions.": "Deployed on Azure App Service, Azure Database for MySQL and Container Registry, with CI/CD on GitHub Actions.",
+"Comparativa de modelos base, instruct y de razonamiento": "Comparing base, instruct and reasoning models",
+"nov 2026": "Nov 2026",
+"Experimento propio en Hugging Face": "Personal experiment on Hugging Face",
+"Tres preguntas sencillas a tres tipos de modelo para ver en la práctica qué cambia entre preentrenar, ajustar a instrucciones y entrenar para razonar.": "Three simple prompts to three types of model, to see in practice what changes between pre-training, instruction tuning and training for reasoning.",
+"Le dije <q>Hola</q> y empezó una receta en inglés. Continúa texto, no conversa.": "I said <q>Hola</q> and it started writing a recipe in English. It continues text; it doesn't hold a conversation.",
+"Explicó un motor de combustión «para un niño de 10 años», pero con errores técnicos. Seguir instrucciones no garantiza acertar.": "It explained a combustion engine “for a 10-year-old”, but with technical mistakes. Following instructions doesn't guarantee being right.",
+"Acertó un problema de lógica con un razonamiento que partía de una suposición falsa. Una respuesta correcta no implica un razonamiento correcto.": "It solved a logic puzzle correctly, but its reasoning started from a false assumption. A correct answer doesn't imply correct reasoning.",
+"Pruebas exploratorias con ejemplos concretos, no un benchmark. <a href=\"https://www.linkedin.com/feed/update/urn:li:activity:7523410860556632066/\" target=\"_blank\" rel=\"noopener\">Ver la publicación ↗</a>": "Exploratory tests with specific examples, not a benchmark. <a href=\"https://www.linkedin.com/feed/update/urn:li:activity:7523410860556632066/\" target=\"_blank\" rel=\"noopener\">See the post (in Spanish) ↗</a>",
+"Máster Universitario en Ingeniería Industrial": "Master's Degree in Industrial Engineering",
+"2025 – actualidad": "2025 – present",
+"Universidad Politécnica de Cartagena": "Technical University of Cartagena (UPCT)",
+"En curso, compaginado con el trabajo a jornada completa.": "In progress, alongside a full-time job.",
+"Grado en Ingeniería en Tecnologías Industriales": "Bachelor's Degree in Industrial Technology Engineering",
+"Nota media 8,21 · 6 matrículas de honor.": "GPA 8.21/10 · 6 distinctions with honours (Matrícula de Honor).",
+"Bachillerato científico-tecnológico": "High school diploma, science and technology track",
+"Nota 10, matrícula de honor y Premio Extraordinario de Bachillerato.": "Final grade 10/10, distinction with honours and the Premio Extraordinario de Bachillerato (award for outstanding results).",
+"Certificaciones": "Certifications",
+"8 de Anthropic Academy": "8 from Anthropic Academy",
+"ago 2026": "Aug 2026",
+"jul 2026": "Jul 2026",
+"jun 2026": "Jun 2026",
+"Otras": "Other",
+"CCS-AI: Generative AI Foundations · PUE Academy y Microsoft": "CCS-AI: Generative AI Foundations · PUE Academy and Microsoft",
+"sept 2025": "Sep 2025",
+"Elements of AI · Universidad de Helsinki": "Elements of AI · University of Helsinki",
+"jul 2024": "Jul 2024",
+"nov 2021": "Nov 2021",
+"jul 2021": "Jul 2021",
+"Competencias": "Skills",
+"4 áreas": "4 areas",
+"ERP y procesos": "ERP and processes",
+"Odoo (MRP, inventario, compras, ventas, calidad)": "Odoo (MRP, inventory, purchasing, sales, quality)",
+"Análisis de procesos": "Process analysis",
+"Migración de datos": "Data migration",
+"Formación a usuarios": "User training",
+"IA aplicada": "Applied AI",
+"Agentes": "Agents",
+"Desarrollo y despliegue": "Development and deployment",
+"Ingeniería": "Engineering",
+"Idiomas y voluntariado": "Languages and volunteering",
+"Español": "Spanish",
+"Nativo": "Native",
+"Inglés": "English",
+"Francés": "French",
+"Voluntariado": "Volunteering",
+"Campamento urbano socioeducativo con menores · Fundación FADE": "Socio-educational day camp for children · Fundación FADE",
+"Recogida de alimentos, campaña de Navidad · Cáritas": "Christmas food drive · Cáritas",
+"Victoria Carbonell Sánchez · CV interactivo": "Victoria Carbonell Sánchez · Interactive CV",
+"Rev. 11 · noviembre 2026": "Rev. 11 · November 2026",
+"API REST": "REST API"
+};
+  var ATTR={"Formulario de inspección con sesión iniciada": "Inspection form with an active session", "Acceso con autenticación por token JWT": "Login with JWT token authentication", "Arquitectura: frontend Streamlit, backend Flask con API REST y MySQL": "Architecture: Streamlit frontend, Flask backend with REST API and MySQL", "Formulario de inspección de la aplicación LEMAR": "Inspection form of the LEMAR app", "Pantalla de inicio de sesión de la aplicación": "App login screen", "Diagrama de arquitectura de la aplicación": "App architecture diagram", "Datos principales": "Key details"};
+  var UI={es:{expand:'Desplegar todo',collapse:'Contraer todo',copy:'Copiar email',copied:'Email copiado',select:'Selecciónalo y copia',title:'Victoria Carbonell Sánchez · CV'},
+          en:{expand:'Expand all',collapse:'Collapse all',copy:'Copy email',copied:'Email copied',select:'Select it and copy',title:'Victoria Carbonell Sánchez · CV'}};
+  var SEL='main h2, main h3, main h4, main p, main li:not(.op), main .op strong, main .op .when, main .label, main .dates, main .org, main .cell-val, main .tag, main .cert span, main .lang span, main footer span, main .contact-row a';
+  var lang='es';
+  function T(k){return UI[lang][k];}
+  function setLang(l){
+    lang=l;
+    document.querySelectorAll(SEL).forEach(function(e){
+      if(e.dataset.es===undefined){var h=e.innerHTML.trim(); if(!(h in EN)) return; e.dataset.es=h;}
+      e.innerHTML = l==='en' ? EN[e.dataset.es] : e.dataset.es;
+    });
+    [['data-cap','.gallery button'],['alt','.gallery img'],['aria-label','header.cajetin']].forEach(function(a){
+      document.querySelectorAll(a[1]).forEach(function(e){
+        var k='es'+a[0].replace(/-/g,''); if(e.dataset[k]===undefined) e.dataset[k]=e.getAttribute(a[0]);
+        var es=e.dataset[k]; e.setAttribute(a[0], l==='en' && ATTR[es] ? ATTR[es] : es);
+      });
+    });
+    var ds=[].slice.call(document.querySelectorAll('details'));
+    all.textContent=T(ds.some(function(d){return !d.open;})?'expand':'collapse');
+    if(!copyBtn.classList.contains('copied')){copyBtn.setAttribute('aria-label',T('copy')); copyBtn.title=T('copy');}
+    document.documentElement.lang=l;
+    document.querySelectorAll('.lang-switch button').forEach(function(b){b.setAttribute('aria-pressed', String(b.dataset.lang===l));});
+    try{localStorage.setItem('cv-lang',l);}catch(e){}
+  }
+  document.querySelectorAll('.lang-switch button').forEach(function(b){b.addEventListener('click',function(){setLang(b.dataset.lang);});});
+  var start='es', q=new URLSearchParams(location.search).get('lang');
+  if(q==='en'||q==='es'){start=q;}
+  else{ var saved=null; try{saved=localStorage.getItem('cv-lang');}catch(e){}
+    if(saved==='en'||saved==='es'){start=saved;} else if(!/^es\b/i.test(navigator.language||'es')){start='en';} }
+  if(start==='en') setLang('en');
 })();
 </script>
 </body>
