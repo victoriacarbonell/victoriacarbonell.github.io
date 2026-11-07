@@ -7,15 +7,15 @@
 <meta name="description" content="Consultora Odoo en Mirandir. ERP e IA aplicada a procesos de negocio. Ingeniera industrial (UPCT). CV interactivo con experiencia, proyectos y formación.">
 <link rel="canonical" href="https://victoriacarbonell.github.io/">
 <meta name="theme-color" content="#2B5C8A">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="icons/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <meta property="og:type" content="profile">
 <meta property="og:locale" content="es_ES">
 <meta property="og:url" content="https://victoriacarbonell.github.io/">
 <meta property="og:title" content="Victoria Carbonell Sánchez · CV">
 <meta property="og:description" content="Consultora Odoo · ERP e IA aplicada a procesos de negocio · Ingeniera industrial (UPCT)">
-<meta property="og:image" content="https://victoriacarbonell.github.io/og-image.png">
+<meta property="og:image" content="https://victoriacarbonell.github.io/img/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Victoria Carbonell Sánchez, consultora Odoo, ERP e IA aplicada">
@@ -68,8 +68,9 @@ h1{font-family:var(--display); font-variation-settings:"wdth" 118; font-weight:8
 .contact-row{display:flex; flex-wrap:wrap; gap:8px 14px; align-items:center; margin-top:6px}
 .btn{font:500 .8rem var(--mono); letter-spacing:.03em; border:1px solid var(--line); background:var(--chip); color:var(--ink); padding:6px 10px; cursor:pointer; border-radius:3px}
 .btn:hover{border-color:var(--accent)}
-.btn-primary{background:var(--accent); border-color:var(--accent); color:var(--sheet); text-decoration:none; display:inline-flex; align-items:center; gap:6px}
-.btn-primary:hover{color:var(--sheet); filter:brightness(1.08)}
+.icon-btn{display:inline-grid; place-items:center; width:30px; height:30px; padding:0; margin-left:-6px; border:1px solid transparent; background:none; color:var(--muted); border-radius:4px; cursor:pointer}
+.icon-btn:hover{color:var(--accent); border-color:var(--line); background:var(--chip)}
+.cell-lang{grid-column:span 2}
 .copied{color:var(--accent)}
 
 /* Routing */
@@ -149,7 +150,8 @@ dialog form{display:flex; justify-content:space-between; align-items:center; gap
   .cajetin > div{border-right:1px solid var(--line) !important}
   .cajetin > div:nth-child(2n+1):not(.cell-name){border-right:1px solid var(--line) !important}
   .cajetin > div:nth-child(even){border-right:0 !important}
-  .cell-wide, .cell-loc{grid-column:1 / -1; border-right:0 !important}
+  .cell-wide, .cell-loc, .cell-lang{grid-column:1 / -1; border-right:0 !important}
+  .cajetin .cell-wide{border-bottom:1px solid var(--line)}
   .ops{grid-template-columns:1fr; gap:14px}
   .op{display:grid; grid-template-columns:24px 1fr; gap:0 12px; padding:0}
   .op::before{left:11px; right:auto; top:24px; bottom:-14px; width:1.5px; height:auto}
@@ -191,19 +193,17 @@ dialog form{display:flex; justify-content:space-between; align-items:center; gap
       <span class="label">Contacto</span>
       <div class="contact-row">
         <span class="mono" id="mail">victoria220503@gmail.com</span>
-        <button class="btn" id="copy-mail" type="button">Copiar email</button>
+        <button class="icon-btn" id="copy-mail" type="button" aria-label="Copiar email" title="Copiar email"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      </div>
+      <div class="contact-row">
         <a class="mono" href="https://www.linkedin.com/in/victoriacarbonellsanchez/" target="_blank" rel="noopener">LinkedIn ↗</a>
         <a class="mono" href="https://github.com/victoriacarbonell" target="_blank" rel="noopener">GitHub ↗</a>
-        <a class="btn btn-primary" href="cv-victoria-carbonell.pdf" download="CV_Victoria_Carbonell.pdf">Descargar CV (PDF) ↓</a>
+        <a class="mono" href="cv-victoria-carbonell.pdf" download="CV_Victoria_Carbonell.pdf">Descargar CV ↘</a>
       </div>
     </div>
-    <div class="last">
+    <div class="cell-lang last">
       <span class="label">Idiomas</span>
       <div class="cell-val">Inglés C2 · Francés B1</div>
-    </div>
-    <div class="last">
-      <span class="label">Revisión</span>
-      <div class="cell-val mono" style="font-size:.9rem">Rev. 11 · nov 2026</div>
     </div>
   </header>
 
@@ -398,8 +398,9 @@ dialog form{display:flex; justify-content:space-between; align-items:center; gap
   var copyBtn=document.getElementById('copy-mail');
   copyBtn.addEventListener('click',function(){
     var t=document.getElementById('mail').textContent;
-    var done=function(){copyBtn.textContent='Copiado'; copyBtn.classList.add('copied'); setTimeout(function(){copyBtn.textContent='Copiar email'; copyBtn.classList.remove('copied');},1800);};
-    var fallback=function(){var r=document.createRange(); r.selectNodeContents(document.getElementById('mail')); var s=getSelection(); s.removeAllRanges(); s.addRange(r); copyBtn.textContent='Selecciónalo y copia';};
+    var icon=copyBtn.innerHTML;
+    var done=function(){copyBtn.innerHTML='<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>'; copyBtn.classList.add('copied'); copyBtn.setAttribute('aria-label','Email copiado'); copyBtn.title='Copiado'; setTimeout(function(){copyBtn.innerHTML=icon; copyBtn.classList.remove('copied'); copyBtn.setAttribute('aria-label','Copiar email'); copyBtn.title='Copiar email';},1800);};
+    var fallback=function(){var r=document.createRange(); r.selectNodeContents(document.getElementById('mail')); var s=getSelection(); s.removeAllRanges(); s.addRange(r); copyBtn.title='Selecciónalo y copia';};
     try{ navigator.clipboard.writeText(t).then(done,fallback);}catch(e){fallback();}
   });
 
