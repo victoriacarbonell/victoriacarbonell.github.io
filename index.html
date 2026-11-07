@@ -6,7 +6,7 @@
 <title>Victoria Carbonell Sánchez · CV</title>
 <meta name="description" content="Consultora Odoo en Mirandir. ERP e IA aplicada a procesos de negocio. Ingeniera industrial (UPCT). CV interactivo con experiencia, proyectos y formación.">
 <link rel="canonical" href="https://victoriacarbonell.github.io/">
-<meta name="theme-color" content="#2B5C8A">
+<meta name="theme-color" content="#1B2433">
 <link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="icons/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -22,22 +22,23 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;700&display=swap">
 <style>
 /* Layout: a technical drawing sheet. Title block (cajetín) on top, a production routing (OP 10 → OP 50) as the career line, then collapsible sections like the notes of a drawing. */
 :root{
-  --paper:#F5F7FA; --sheet:#FFFFFF; --ink:#13233A; --muted:#566781; --line:#D5DCE6; --grid:rgba(19,35,58,.045);
-  --accent:#2B5C8A; --accent-soft:rgba(43,92,138,.09); --chip:#EEF2F7;
-  --display:"Archivo", "Arial Narrow", Arial, sans-serif;
-  --body:"IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
-  --mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  /* Brand: grafito #1B2433, blanco roto #F5F6F8, frambuesa #E84C88 (accent, max ~10%, never for small text), gris pizarra #5B6475 */
+  --paper:#F5F6F8; --sheet:#FFFFFF; --ink:#1B2433; --muted:#5B6475; --line:#DADDE3; --grid:rgba(27,36,51,.045);
+  --accent:#E84C88; --accent-soft:rgba(232,76,136,.08); --chip:#F0F1F4; --on-ink:#F5F6F8;
+  --display:"Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  --body:"Inter", "Segoe UI", system-ui, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
 }
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
-  --paper:#0C1726; --sheet:#101E31; --ink:#E5ECF5; --muted:#93A4BA; --line:#23364F; --grid:rgba(229,236,245,.035);
-  --accent:#7FB2E5; --accent-soft:rgba(127,178,229,.12); --chip:#16283F; color-scheme:dark } }
+  --paper:#121924; --sheet:#1B2433; --ink:#F5F6F8; --muted:#A7AFBD; --line:#2E394B; --grid:rgba(245,246,248,.035);
+  --accent:#E84C88; --accent-soft:rgba(232,76,136,.12); --chip:#232D3E; --on-ink:#1B2433; color-scheme:dark } }
 :root[data-theme="dark"]{
-  --paper:#0C1726; --sheet:#101E31; --ink:#E5ECF5; --muted:#93A4BA; --line:#23364F; --grid:rgba(229,236,245,.035);
-  --accent:#7FB2E5; --accent-soft:rgba(127,178,229,.12); --chip:#16283F; color-scheme:dark }
+  --paper:#121924; --sheet:#1B2433; --ink:#F5F6F8; --muted:#A7AFBD; --line:#2E394B; --grid:rgba(245,246,248,.035);
+  --accent:#E84C88; --accent-soft:rgba(232,76,136,.12); --chip:#232D3E; --on-ink:#1B2433; color-scheme:dark }
 
 *{box-sizing:border-box}
 body{
@@ -49,7 +50,7 @@ body{
   padding-block:40px 64px;
 }
 a{color:inherit; text-decoration-color:var(--accent); text-underline-offset:3px}
-a:hover{color:var(--accent)}
+a:hover{text-decoration-thickness:2px}
 :focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:2px}
 .sheet{max-width:980px; margin:0 auto; display:grid; gap:28px}
 .mono{font-family:var(--mono); font-size:.78rem; letter-spacing:.04em}
@@ -64,18 +65,21 @@ a:hover{color:var(--accent)}
 .lang-switch button{font:500 .72rem var(--mono); letter-spacing:.08em; padding:5px 9px; border:0; background:none; color:var(--muted); cursor:pointer}
 .lang-switch button + button{border-left:1px solid var(--line)}
 .cell-name > .label{display:block; padding-right:96px}
-.lang-switch button[aria-pressed="true"]{background:var(--accent); color:var(--sheet)}
-.lang-switch button:not([aria-pressed="true"]):hover{color:var(--accent)}
-h1{font-family:var(--display); font-variation-settings:"wdth" 118; font-weight:800; font-size:clamp(2rem, 5.4vw, 3.6rem); line-height:1; margin:6px 0 14px; letter-spacing:-.01em; text-transform:uppercase; text-wrap:balance}
-.thesis{font-size:clamp(1.05rem, 2.2vw, 1.3rem); max-width:62ch; margin:0; color:var(--ink)}
-.thesis em{font-style:normal; color:var(--accent); font-weight:600}
+.cell-name{display:grid; grid-template-columns:132px 1fr; column-gap:26px; align-items:center}
+.cell-name > .portrait{grid-row:1 / span 3; width:132px; height:auto; aspect-ratio:4/5; object-fit:cover; border:1px solid var(--line); display:block; align-self:center}
+.cell-name > :not(.portrait):not(.lang-switch){grid-column:2}
+.lang-switch button[aria-pressed="true"]{background:var(--ink); color:var(--on-ink)}
+.lang-switch button:not([aria-pressed="true"]):hover{color:var(--ink)}
+h1{font-family:var(--display); font-weight:700; font-size:clamp(2rem, 5.2vw, 3.4rem); line-height:1.02; margin:6px 0 14px; letter-spacing:-.02em; text-wrap:balance}
+.thesis{font-family:var(--display); font-size:clamp(1.1rem, 2.3vw, 1.35rem); line-height:1.45; max-width:62ch; margin:0; color:var(--ink)}
+.thesis em{font-style:normal; font-weight:700; color:var(--ink); background:linear-gradient(transparent 62%, var(--accent-soft) 62%); box-shadow:inset 0 -2px 0 var(--accent)}
 .cell-val{margin-top:4px; font-weight:500}
 .cajetin .last{border-bottom:0}
 .contact-row{display:flex; flex-wrap:wrap; gap:8px 14px; align-items:center; margin-top:6px}
 .btn{font:500 .8rem var(--mono); letter-spacing:.03em; border:1px solid var(--line); background:var(--chip); color:var(--ink); padding:6px 10px; cursor:pointer; border-radius:3px}
-.btn:hover{border-color:var(--accent)}
+.btn:hover{border-color:var(--ink)}
 .icon-btn{display:inline-grid; place-items:center; width:30px; height:30px; padding:0; margin-left:-6px; border:1px solid transparent; background:none; color:var(--muted); border-radius:4px; cursor:pointer}
-.icon-btn:hover{color:var(--accent); border-color:var(--line); background:var(--chip)}
+.icon-btn:hover{color:var(--ink); border-color:var(--line); background:var(--chip)}
 .cell-lang{grid-column:span 2}
 .copied{color:var(--accent)}
 
@@ -89,12 +93,12 @@ h1{font-family:var(--display); font-variation-settings:"wdth" 118; font-weight:8
 .dot{position:relative; width:24px; height:24px; border:1.5px solid var(--ink); background:var(--sheet); border-radius:50%; display:grid; place-items:center}
 .op.now .dot{border-color:var(--accent); background:var(--accent)}
 .op.now .dot::after{content:""; width:8px; height:8px; border-radius:50%; background:var(--sheet)}
-.op .mono{display:block; margin-top:10px; color:var(--accent); font-weight:500}
-.op strong{display:block; font-size:.95rem; line-height:1.3; margin-top:2px}
+.op .mono{display:block; margin-top:10px; color:var(--muted); font-weight:500}
+.op strong{display:block; font-family:var(--display); font-weight:700; font-size:.98rem; line-height:1.3; margin-top:2px}
 .op span.when{display:block; font-size:.82rem; color:var(--muted)}
 
 /* Sections */
-h2{font-family:var(--display); font-variation-settings:"wdth" 100; font-weight:750; font-size:1.05rem; text-transform:uppercase; letter-spacing:.08em; margin:0}
+h2{font-family:var(--display); font-weight:700; font-size:1.25rem; letter-spacing:-.01em; margin:0}
 .toolbar{display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap}
 details.sec{background:var(--sheet); border:1px solid var(--line)}
 details.sec > summary{list-style:none; cursor:pointer; display:flex; align-items:baseline; justify-content:space-between; gap:12px; padding:16px 18px; border-bottom:1px solid transparent}
@@ -108,8 +112,8 @@ details[open] > summary .chev{transform:rotate(90deg)}
 .item{border-bottom:1px dashed var(--line)}
 .item:last-child{border-bottom:0}
 .item > summary{list-style:none; cursor:pointer; display:grid; grid-template-columns:1fr auto; gap:4px 16px; padding:14px 0; align-items:baseline}
-.item > summary:hover h3{color:var(--accent)}
-h3{font-family:var(--body); font-weight:600; font-size:1.02rem; margin:0; transition:color .15s}
+.item > summary:hover h3{text-decoration:underline; text-decoration-color:var(--accent); text-underline-offset:4px}
+h3{font-family:var(--display); font-weight:700; font-size:1.06rem; margin:0; transition:color .15s}
 .org{color:var(--muted); font-size:.92rem; grid-column:1}
 .dates{grid-row:1; grid-column:2; font-family:var(--mono); font-size:.76rem; color:var(--muted); white-space:nowrap}
 .item-body{padding:0 0 16px; max-width:72ch}
@@ -132,7 +136,7 @@ h3{font-family:var(--body); font-weight:600; font-size:1.02rem; margin:0; transi
 .tests{display:grid; gap:8px; margin:12px 0}
 .test{display:grid; grid-template-columns:120px 1fr; gap:12px; border:1px solid var(--line); padding:10px 12px; background:var(--paper)}
 .test .kind{font-family:var(--mono); font-size:.72rem; letter-spacing:.06em}
-.test .kind b{display:block; color:var(--accent); font-size:.8rem}
+.test .kind b{display:block; color:var(--ink); font-size:.8rem}
 .test p{margin:0}
 .test q{font-style:italic}
 
@@ -158,6 +162,11 @@ dialog form{display:flex; justify-content:space-between; align-items:center; gap
   .cajetin > div:nth-child(even){border-right:0 !important}
   .cell-wide, .cell-loc, .cell-lang{grid-column:1 / -1; border-right:0 !important}
   .cajetin .cell-wide{border-bottom:1px solid var(--line)}
+  .cell-name{grid-template-columns:88px 1fr; column-gap:16px; align-items:center}
+  .cell-name > .label{grid-column:1 / -1 !important; grid-row:1; margin-bottom:12px}
+  .cell-name > .portrait{width:88px; grid-row:2; grid-column:1}
+  .cell-name > h1{grid-row:2; margin:0}
+  .cell-name > .thesis{grid-column:1 / -1 !important; grid-row:3; margin-top:16px}
   .ops{grid-template-columns:1fr; gap:14px}
   .op{display:grid; grid-template-columns:24px 1fr; gap:0 12px; padding:0}
   .op::before{left:11px; right:auto; top:24px; bottom:-14px; width:1.5px; height:auto}
@@ -180,6 +189,7 @@ dialog form{display:flex; justify-content:space-between; align-items:center; gap
   <header class="cajetin" aria-label="Datos principales">
     <div class="cell-name">
       <div class="lang-switch" role="group" aria-label="Idioma / Language"><button type="button" data-lang="es" aria-pressed="true">ES</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div>
+      <img class="portrait" src="img/foto.jpg" alt="Foto de Victoria Carbonell Sánchez" width="480" height="600">
       <span class="label">Ingeniera industrial · Consultora ERP</span>
       <h1>Victoria Carbonell Sánchez</h1>
       <p class="thesis">Implanto Odoo en empresas industriales y de distribución, y conecto sus sistemas con <em>IA aplicada a procesos de negocio</em>.</p>
@@ -540,7 +550,7 @@ dialog form{display:flex; justify-content:space-between; align-items:center; gap
 "Rev. 11 · noviembre 2026": "Rev. 11 · November 2026",
 "API REST": "REST API"
 };
-  var ATTR={"Formulario de inspección con sesión iniciada": "Inspection form with an active session", "Acceso con autenticación por token JWT": "Login with JWT token authentication", "Arquitectura: frontend Streamlit, backend Flask con API REST y MySQL": "Architecture: Streamlit frontend, Flask backend with REST API and MySQL", "Formulario de inspección de la aplicación LEMAR": "Inspection form of the LEMAR app", "Pantalla de inicio de sesión de la aplicación": "App login screen", "Diagrama de arquitectura de la aplicación": "App architecture diagram", "Datos principales": "Key details"};
+  var ATTR={"Formulario de inspección con sesión iniciada": "Inspection form with an active session", "Acceso con autenticación por token JWT": "Login with JWT token authentication", "Arquitectura: frontend Streamlit, backend Flask con API REST y MySQL": "Architecture: Streamlit frontend, Flask backend with REST API and MySQL", "Formulario de inspección de la aplicación LEMAR": "Inspection form of the LEMAR app", "Pantalla de inicio de sesión de la aplicación": "App login screen", "Diagrama de arquitectura de la aplicación": "App architecture diagram", "Datos principales": "Key details", "Foto de Victoria Carbonell Sánchez": "Photo of Victoria Carbonell Sánchez"};
   var UI={es:{expand:'Desplegar todo',collapse:'Contraer todo',copy:'Copiar email',copied:'Email copiado',select:'Selecciónalo y copia',title:'Victoria Carbonell Sánchez · CV'},
           en:{expand:'Expand all',collapse:'Collapse all',copy:'Copy email',copied:'Email copied',select:'Select it and copy',title:'Victoria Carbonell Sánchez · CV'}};
   var SEL='main h2, main h3, main h4, main p, main li:not(.op), main .op strong, main .op .when, main .label, main .dates, main .org, main .cell-val, main .tag, main .cert span, main .lang span, main footer span, main .contact-row a';
@@ -552,7 +562,7 @@ dialog form{display:flex; justify-content:space-between; align-items:center; gap
       if(e.dataset.es===undefined){var h=e.innerHTML.trim(); if(!(h in EN)) return; e.dataset.es=h;}
       e.innerHTML = l==='en' ? EN[e.dataset.es] : e.dataset.es;
     });
-    [['data-cap','.gallery button'],['alt','.gallery img'],['aria-label','header.cajetin']].forEach(function(a){
+    [['data-cap','.gallery button'],['alt','.gallery img, .portrait'],['aria-label','header.cajetin']].forEach(function(a){
       document.querySelectorAll(a[1]).forEach(function(e){
         var k='es'+a[0].replace(/-/g,''); if(e.dataset[k]===undefined) e.dataset[k]=e.getAttribute(a[0]);
         var es=e.dataset[k]; e.setAttribute(a[0], l==='en' && ATTR[es] ? ATTR[es] : es);

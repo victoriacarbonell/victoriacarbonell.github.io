@@ -16,7 +16,8 @@ The design follows the look of a technical drawing: a title block at the top, th
 ## Tech
 
 - Plain HTML, CSS and JavaScript in a single file, with no build step or dependencies
-- Fonts from Google Fonts (Archivo, IBM Plex Sans, IBM Plex Mono)
+- Fonts from Google Fonts (Space Grotesk, Inter, JetBrains Mono)
+- Spanish and English versions with an ES/EN switch
 - Light and dark mode based on system settings
 - Open Graph tags for link previews on LinkedIn and other platforms
 
