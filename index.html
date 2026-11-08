@@ -315,8 +315,29 @@ dialog form{display:flex; justify-content:space-between; align-items:center; gap
   </details>
 
   <details class="sec">
-    <summary><span class="sec-sum"><h2>Proyectos</h2><span class="label">2 proyectos</span></span><span class="chev">›</span></summary>
+    <summary><span class="sec-sum"><h2>Proyectos</h2><span class="label">3 proyectos</span></span><span class="chev">›</span></summary>
     <div class="sec-body">
+
+      <details class="item">
+        <summary><h3>Comparativa de modelos base, instruct y de razonamiento</h3><span class="dates">nov 2026</span><span class="org">Experimento propio en Hugging Face</span></summary>
+        <div class="item-body">
+          <p>Tres preguntas sencillas a tres tipos de modelo para ver en la práctica qué cambia entre preentrenar, ajustar a instrucciones y entrenar para razonar.</p>
+          <div class="tests">
+            <div class="test"><div class="kind"><b>BASE</b><a href="https://huggingface.co/meta-llama/Llama-3.2-3B" target="_blank" rel="noopener">Llama 3.2 3B</a></div><p>Le dije <q>Hola</q> y empezó una receta en inglés. Continúa texto, no conversa.</p></div>
+            <div class="test"><div class="kind"><b>INSTRUCT</b><a href="https://huggingface.co/meta-llama/Llama-3.2-3B-Instruct" target="_blank" rel="noopener">Llama 3.2 3B Instruct</a></div><p>Explicó un motor de combustión «para un niño de 10 años», pero con errores técnicos. Seguir instrucciones no garantiza acertar.</p></div>
+            <div class="test"><div class="kind"><b>REASONING</b><a href="https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-7B" target="_blank" rel="noopener">DeepSeek R1 Distill Qwen 7B</a></div><p>Acertó un problema de lógica con un razonamiento que partía de una suposición falsa. Una respuesta correcta no implica un razonamiento correcto.</p></div>
+          </div>
+          <div class="gallery">
+            <div class="g-stage">
+              <div class="g-track">
+                <button class="g-slide" type="button" data-full="img/hf_infografia.jpg" data-cap="Infografía publicada en LinkedIn con las tres pruebas"><img src="img/hf_infografia.jpg" alt="Infografía del experimento: preguntas y respuestas de los modelos base, instruct y de razonamiento" loading="lazy"></button>
+              </div>
+            </div>
+            <div class="g-foot"><span class="g-cap" aria-live="polite"></span></div>
+          </div>
+          <p class="caption">Pruebas exploratorias con ejemplos concretos, no un benchmark. <a href="https://www.linkedin.com/feed/update/urn:li:activity:7523410860556632066/" target="_blank" rel="noopener">Ver la publicación ↗</a></p>
+        </div>
+      </details>
 
       <details class="item" id="proy-tfg" open>
         <summary><h3>Aplicación web para automatizar inspecciones de máquinas recreativas (TFG)</h3><span class="dates">2024 – 2025</span><span class="org">Grado en Ingeniería en Tecnologías Industriales · UPCT · Laboratorio ISO 17025</span></summary>
@@ -349,28 +370,41 @@ dialog form{display:flex; justify-content:space-between; align-items:center; gap
           </ul>
         </div>
       </details>
-
-      <details class="item">
-        <summary><h3>Comparativa de modelos base, instruct y de razonamiento</h3><span class="dates">nov 2026</span><span class="org">Experimento propio en Hugging Face</span></summary>
+      <details class="item" id="proy-vision">
+        <summary><h3>Inspección de piezas mediante visión artificial</h3><span class="dates">2025</span><span class="org">Trabajo final · Lenguajes de Programación · GITI, UPCT</span></summary>
         <div class="item-body">
-          <p>Tres preguntas sencillas a tres tipos de modelo para ver en la práctica qué cambia entre preentrenar, ajustar a instrucciones y entrenar para razonar.</p>
-          <div class="tests">
-            <div class="test"><div class="kind"><b>BASE</b><a href="https://huggingface.co/meta-llama/Llama-3.2-3B" target="_blank" rel="noopener">Llama 3.2 3B</a></div><p>Le dije <q>Hola</q> y empezó una receta en inglés. Continúa texto, no conversa.</p></div>
-            <div class="test"><div class="kind"><b>INSTRUCT</b><a href="https://huggingface.co/meta-llama/Llama-3.2-3B-Instruct" target="_blank" rel="noopener">Llama 3.2 3B Instruct</a></div><p>Explicó un motor de combustión «para un niño de 10 años», pero con errores técnicos. Seguir instrucciones no garantiza acertar.</p></div>
-            <div class="test"><div class="kind"><b>REASONING</b><a href="https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-7B" target="_blank" rel="noopener">DeepSeek R1 Distill Qwen 7B</a></div><p>Acertó un problema de lógica con un razonamiento que partía de una suposición falsa. Una respuesta correcta no implica un razonamiento correcto.</p></div>
-          </div>
+          <p>Aplicación de escritorio en C# que inspecciona piezas mecánicas pequeñas con una cámara industrial: captura vídeo en tiempo real, separa cada pieza del fondo y la clasifica automáticamente.</p>
           <div class="gallery">
             <div class="g-stage">
               <div class="g-track">
-                <button class="g-slide" type="button" data-full="img/hf_infografia.jpg" data-cap="Infografía publicada en LinkedIn con las tres pruebas"><img src="img/hf_infografia.jpg" alt="Infografía del experimento: preguntas y respuestas de los modelos base, instruct y de razonamiento" loading="lazy"></button>
+                <button class="g-slide" type="button" data-full="img/vision_montaje.jpg" data-cap="Montaje: cámara industrial IDS sobre panel de iluminación a contraluz"><img src="img/vision_montaje.jpg" alt="Montaje de la cámara industrial sobre el panel de luz" loading="lazy"></button>
+                <button class="g-slide" type="button" data-full="img/vision_piezas.jpg" data-cap="Piezas a clasificar: tornillos, tuercas, arandelas, llaves Allen, gancho y placas"><img src="img/vision_piezas.jpg" alt="Piezas mecánicas usadas en las pruebas" loading="lazy"></button>
+                <button class="g-slide" type="button" data-full="img/vision_contornos.jpg" data-cap="Contornos detectados sobre la imagen binarizada"><img src="img/vision_contornos.jpg" alt="Contornos de tornillos detectados en verde sobre la imagen binarizada" loading="lazy"></button>
+                <button class="g-slide" type="button" data-full="img/vision_tiempo_real.jpg" data-cap="Identificación en tiempo real desde la interfaz"><img src="img/vision_tiempo_real.jpg" alt="Pieza identificada como tornillo en el vídeo en directo" loading="lazy"></button>
+              </div>
+              <button class="g-nav prev" type="button" aria-label="Foto anterior"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
+              <button class="g-nav next" type="button" aria-label="Foto siguiente"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
+              <span class="g-count" aria-hidden="true">1 / 4</span>
+            </div>
+            <div class="g-foot">
+              <span class="g-cap" aria-live="polite"></span>
+              <div class="g-thumbs">
+                <button class="g-thumb" type="button" aria-label="Montaje: cámara industrial IDS sobre panel de iluminación a contraluz" aria-current="true"><img src="img/vision_montaje.jpg" alt="" loading="lazy"></button>
+                <button class="g-thumb" type="button" aria-label="Piezas a clasificar: tornillos, tuercas, arandelas, llaves Allen, gancho y placas"><img src="img/vision_piezas.jpg" alt="" loading="lazy"></button>
+                <button class="g-thumb" type="button" aria-label="Contornos detectados sobre la imagen binarizada"><img src="img/vision_contornos.jpg" alt="" loading="lazy"></button>
+                <button class="g-thumb" type="button" aria-label="Identificación en tiempo real desde la interfaz"><img src="img/vision_tiempo_real.jpg" alt="" loading="lazy"></button>
               </div>
             </div>
-            <div class="g-foot"><span class="g-cap" aria-live="polite"></span></div>
           </div>
-          <p class="caption">Pruebas exploratorias con ejemplos concretos, no un benchmark. <a href="https://www.linkedin.com/feed/update/urn:li:activity:7523410860556632066/" target="_blank" rel="noopener">Ver la publicación ↗</a></p>
+          <ul>
+            <li>Cámara industrial IDS (GigE) con óptica de 16 mm e iluminación a contraluz para obtener siluetas nítidas.</li>
+            <li>Procesado con Emgu CV (OpenCV para .NET): binarización por umbral, detección de contornos y su jerarquía para distinguir piezas de agujeros.</li>
+            <li>Clasificación por reglas a partir de área, perímetro, circularidad, solidez, relación de aspecto, vértices y número de agujeros: tornillos, tuercas, arandelas, llaves Allen, ganchos y placas de unión.</li>
+            <li>Interfaz en Windows Forms con vídeo en directo, carga de imágenes, contadores por tipo de pieza y ajuste de exposición, ganancia y FPS.</li>
+          </ul>
+          <div class="tags"><span class="tag">C#</span><span class="tag">.NET 6</span><span class="tag">Emgu CV / OpenCV</span><span class="tag">Windows Forms</span><span class="tag">Visión artificial</span></div>
         </div>
       </details>
-
     </div>
   </details>
 
@@ -570,7 +604,16 @@ dialog form{display:flex; justify-content:space-between; align-items:center; gap
 "Formación en la norma ISO/IEC 17025 y participación en ensayos acreditados, para entender el proceso antes de digitalizarlo.": "Training in ISO/IEC 17025 and hands-on work in accredited tests, to understand the process before digitalising it.",
 "Desarrollo de la interfaz y la lógica de negocio con Python (Flask, Streamlit), API REST y MySQL.": "Development of the interface and business logic with Python (Flask, Streamlit), a REST API and MySQL.",
 "Proyectos": "Projects",
-"2 proyectos": "2 projects",
+"3 proyectos": "3 projects",
+"Inspección de piezas mediante visión artificial": "Inspecting parts with machine vision",
+"Trabajo final · Lenguajes de Programación · GITI, UPCT": "Final project · Programming Languages · Industrial Technology Engineering, UPCT",
+"Aplicación de escritorio en C# que inspecciona piezas mecánicas pequeñas con una cámara industrial: captura vídeo en tiempo real, separa cada pieza del fondo y la clasifica automáticamente.": "C# desktop application that inspects small mechanical parts with an industrial camera: it captures live video, separates each part from the background and classifies it automatically.",
+"Cámara industrial IDS (GigE) con óptica de 16 mm e iluminación a contraluz para obtener siluetas nítidas.": "IDS industrial camera (GigE) with a 16 mm lens and backlighting to get sharp silhouettes.",
+"Procesado con Emgu CV (OpenCV para .NET): binarización por umbral, detección de contornos y su jerarquía para distinguir piezas de agujeros.": "Processing with Emgu CV (OpenCV for .NET): threshold binarisation, contour detection and contour hierarchy to tell parts from holes.",
+"Clasificación por reglas a partir de área, perímetro, circularidad, solidez, relación de aspecto, vértices y número de agujeros: tornillos, tuercas, arandelas, llaves Allen, ganchos y placas de unión.": "Rule-based classification from area, perimeter, circularity, solidity, aspect ratio, vertices and number of holes: screws, nuts, washers, Allen keys, hooks and joining plates.",
+"Interfaz en Windows Forms con vídeo en directo, carga de imágenes, contadores por tipo de pieza y ajuste de exposición, ganancia y FPS.": "Windows Forms interface with live video, image loading, counters per part type and exposure, gain and FPS controls.",
+"Visión artificial": "Machine vision",
+
 "Aplicación web para automatizar inspecciones de máquinas recreativas (TFG)": "Web app to automate gaming machine inspections (Bachelor's thesis)",
 "Grado en Ingeniería en Tecnologías Industriales · UPCT · Laboratorio ISO 17025": "Bachelor's in Industrial Technology Engineering · UPCT · ISO 17025 laboratory",
 "Sustituye la redacción manual de informes de inspección por un formulario guiado que valida los datos, genera el informe en PDF y lo envía por correo al cliente.": "Replaces manually written inspection reports with a guided form that validates the data, generates the PDF report and emails it to the client.",
@@ -628,7 +671,7 @@ dialog form{display:flex; justify-content:space-between; align-items:center; gap
 "Rev. 11 · noviembre 2026": "Rev. 11 · November 2026",
 "API REST": "REST API"
 };
-  var ATTR={"Formulario de inspección con sesión iniciada": "Inspection form with an active session", "Acceso con autenticación por token JWT": "Login with JWT token authentication", "Infografía publicada en LinkedIn con las tres pruebas": "Infographic posted on LinkedIn with the three tests (in Spanish)", "Infografía del experimento: preguntas y respuestas de los modelos base, instruct y de razonamiento": "Experiment infographic: prompts and answers from the base, instruct and reasoning models", "Arquitectura: frontend Streamlit, backend Flask con API REST y MySQL": "Architecture: Streamlit frontend, Flask backend with REST API and MySQL", "Formulario de inspección de la aplicación LEMAR": "Inspection form of the LEMAR app", "Pantalla de inicio de sesión de la aplicación": "App login screen", "Diagrama de arquitectura de la aplicación": "App architecture diagram", "Datos principales": "Key details", "Foto de Victoria Carbonell Sánchez": "Photo of Victoria Carbonell Sánchez", "Foto anterior": "Previous photo", "Foto siguiente": "Next photo"};
+  var ATTR={"Formulario de inspección con sesión iniciada": "Inspection form with an active session", "Acceso con autenticación por token JWT": "Login with JWT token authentication", "Montaje: cámara industrial IDS sobre panel de iluminación a contraluz": "Setup: IDS industrial camera over a backlight panel", "Montaje de la cámara industrial sobre el panel de luz": "Industrial camera set up over the light panel", "Piezas a clasificar: tornillos, tuercas, arandelas, llaves Allen, gancho y placas": "Parts to classify: screws, nuts, washers, Allen keys, a hook and plates", "Piezas mecánicas usadas en las pruebas": "Mechanical parts used in the tests", "Contornos detectados sobre la imagen binarizada": "Contours detected on the binarised image", "Contornos de tornillos detectados en verde sobre la imagen binarizada": "Screw contours detected in green on the binarised image", "Identificación en tiempo real desde la interfaz": "Real-time identification in the app", "Pieza identificada como tornillo en el vídeo en directo": "Part identified as a screw in the live video", "Infografía publicada en LinkedIn con las tres pruebas": "Infographic posted on LinkedIn with the three tests (in Spanish)", "Infografía del experimento: preguntas y respuestas de los modelos base, instruct y de razonamiento": "Experiment infographic: prompts and answers from the base, instruct and reasoning models", "Arquitectura: frontend Streamlit, backend Flask con API REST y MySQL": "Architecture: Streamlit frontend, Flask backend with REST API and MySQL", "Formulario de inspección de la aplicación LEMAR": "Inspection form of the LEMAR app", "Pantalla de inicio de sesión de la aplicación": "App login screen", "Diagrama de arquitectura de la aplicación": "App architecture diagram", "Datos principales": "Key details", "Foto de Victoria Carbonell Sánchez": "Photo of Victoria Carbonell Sánchez", "Foto anterior": "Previous photo", "Foto siguiente": "Next photo"};
   var UI={es:{expand:'Desplegar todo',collapse:'Contraer todo',copy:'Copiar email',copied:'Email copiado',select:'Selecciónalo y copia',title:'Victoria Carbonell Sánchez · CV'},
           en:{expand:'Expand all',collapse:'Collapse all',copy:'Copy email',copied:'Email copied',select:'Select it and copy',title:'Victoria Carbonell Sánchez · CV'}};
   var SEL='main h2, main h3, main h4, main p, main li:not(.op), main .op strong, main .op .when, main .label, main .dates, main .org, main .cell-val, main .tag, main .cert span, main .lang span, main footer span, main .contact-row a';
