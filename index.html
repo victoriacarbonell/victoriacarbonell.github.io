@@ -239,7 +239,7 @@ dialog form{display:flex; justify-content:space-between; align-items:center; gap
       <div class="contact-row">
         <a class="mono" href="https://www.linkedin.com/in/victoriacarbonellsanchez/" target="_blank" rel="noopener">LinkedIn ↗</a>
         <a class="mono" href="https://github.com/victoriacarbonell" target="_blank" rel="noopener">GitHub ↗</a>
-        <a class="mono" href="cv-victoria-carbonell.pdf" download="CV_Victoria_Carbonell.pdf">Descargar CV ↘</a>
+        <a class="mono" id="cv-download" href="cv-victoria-carbonell.pdf" download="CV_Victoria_Carbonell.pdf">Descargar CV ↘</a>
       </div>
     </div>
     <div class="cell-lang last">
@@ -564,7 +564,7 @@ dialog form{display:flex; justify-content:space-between; align-items:center; gap
 "Ubicación": "Location",
 "Murcia · Cartagena<br><span class=\"caption\">Presencial o híbrido</span>": "Murcia · Cartagena, Spain<br><span class=\"caption\">On-site or hybrid</span>",
 "Contacto": "Contact",
-"Descargar CV ↘": "Download CV (Spanish) ↘",
+"Descargar CV ↘": "Download CV ↘",
 "Idiomas": "Languages",
 "Inglés C2 · Francés B1": "English C2 · French B1",
 "Hoja de ruta": "Roadmap",
@@ -698,6 +698,8 @@ dialog form{display:flex; justify-content:space-between; align-items:center; gap
     var ds=[].slice.call(document.querySelectorAll('details'));
     all.textContent=T(ds.some(function(d){return !d.open;})?'expand':'collapse');
     galleryUpdates.forEach(function(f){f();});
+    var dl=document.getElementById('cv-download');
+    if(dl){ var en=(l==='en'); dl.setAttribute('href', en?'cv-victoria-carbonell-en.pdf':'cv-victoria-carbonell.pdf'); dl.setAttribute('download', en?'CV_Victoria_Carbonell_EN.pdf':'CV_Victoria_Carbonell.pdf'); }
     if(!copyBtn.classList.contains('copied')){copyBtn.setAttribute('aria-label',T('copy')); copyBtn.title=T('copy');}
     document.documentElement.lang=l;
     document.querySelectorAll('.lang-switch button').forEach(function(b){b.setAttribute('aria-pressed', String(b.dataset.lang===l));});
