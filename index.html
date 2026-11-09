@@ -713,5 +713,26 @@ dialog form{display:flex; justify-content:space-between; align-items:center; gap
   if(start==='en') setLang('en');
 })();
 </script>
+
+<script>
+(function(){
+  function gc(path){ try{ if(window.goatcounter && window.goatcounter.count) window.goatcounter.count({path:path, event:true}); }catch(e){} }
+  function slug(t){ return (t||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,50); }
+  document.addEventListener('click', function(e){
+    var a=e.target.closest('a, summary, .lang-switch button');
+    if(!a) return;
+    if(a.id==='cv-download'){ gc('descarga-cv-'+(document.documentElement.lang==='en'?'en':'es')); return; }
+    if(a.classList.contains('op-link')){ gc('ruta-'+a.getAttribute('href').slice(1)); return; }
+    if(a.matches('.lang-switch button')){ gc('idioma-'+a.dataset.lang); return; }
+    if(a.tagName==='SUMMARY'){
+      var d=a.parentElement; if(d.open) return;
+      var h=a.querySelector('h2,h3'); gc((d.classList.contains('sec')?'seccion-':'abre-')+(d.id||slug(h&&h.textContent)));
+      return;
+    }
+    if(a.tagName==='A' && a.hostname && a.hostname!==location.hostname){ gc('enlace-'+slug(a.hostname+a.pathname)); }
+  });
+})();
+</script>
+<script data-goatcounter="https://victoriacarbonell.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
