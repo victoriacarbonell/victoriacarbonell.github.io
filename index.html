@@ -81,10 +81,7 @@ h1{font-family:var(--display); font-weight:700; font-size:clamp(2rem, 5.2vw, 3.4
 .contact-row{display:flex; flex-wrap:wrap; gap:8px 14px; align-items:center; margin-top:6px}
 .btn{font:500 .8rem var(--mono); letter-spacing:.03em; border:1px solid var(--line); background:var(--chip); color:var(--ink); padding:6px 10px; cursor:pointer; border-radius:3px}
 .btn:hover{border-color:var(--ink)}
-.icon-btn{display:inline-grid; place-items:center; width:30px; height:30px; padding:0; margin-left:-6px; border:1px solid transparent; background:none; color:var(--muted); border-radius:4px; cursor:pointer}
-.icon-btn:hover{color:var(--ink); border-color:var(--line); background:var(--chip)}
 .cell-lang{grid-column:span 2}
-.copied{color:var(--accent)}
 
 /* Routing */
 .routing{background:var(--sheet); border:1px solid var(--line); padding:20px 18px 22px}
@@ -232,10 +229,6 @@ dialog form{display:flex; justify-content:space-between; align-items:center; gap
     </div>
     <div class="cell-wide last">
       <span class="label">Contacto</span>
-      <div class="contact-row">
-        <span class="mono" id="mail"></span>
-        <button class="icon-btn" id="copy-mail" type="button" aria-label="Copiar email" title="Copiar email"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
-      </div>
       <div class="contact-row">
         <a class="mono" href="https://www.linkedin.com/in/victoriacarbonellsanchez/" target="_blank" rel="noopener">LinkedIn ↗</a>
         <a class="mono" href="https://github.com/victoriacarbonell" target="_blank" rel="noopener">GitHub ↗</a>
@@ -498,15 +491,6 @@ dialog form{display:flex; justify-content:space-between; align-items:center; gap
 
 <script>
 (function(){
-  var copyBtn=document.getElementById('copy-mail');
-  copyBtn.addEventListener('click',function(){
-    var t=document.getElementById('mail').textContent;
-    var icon=copyBtn.innerHTML;
-    var done=function(){copyBtn.innerHTML='<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>'; copyBtn.classList.add('copied'); copyBtn.setAttribute('aria-label',T('copied')); copyBtn.title=T('copied'); setTimeout(function(){copyBtn.innerHTML=icon; copyBtn.classList.remove('copied'); copyBtn.setAttribute('aria-label',T('copy')); copyBtn.title=T('copy');},1800);};
-    var fallback=function(){var r=document.createRange(); r.selectNodeContents(document.getElementById('mail')); var s=getSelection(); s.removeAllRanges(); s.addRange(r); copyBtn.title=T('select');};
-    try{ navigator.clipboard.writeText(t).then(done,fallback);}catch(e){fallback();}
-  });
-
   var all=document.getElementById('toggle-all');
   all.addEventListener('click',function(){
     var ds=[].slice.call(document.querySelectorAll('details'));
@@ -678,8 +662,8 @@ dialog form{display:flex; justify-content:space-between; align-items:center; gap
 "API REST": "REST API"
 };
   var ATTR={"Formulario de inspección con sesión iniciada": "Inspection form with an active session", "Acceso con autenticación por token JWT": "Login with JWT token authentication", "Montaje: cámara industrial IDS sobre panel de iluminación a contraluz": "Setup: IDS industrial camera over a backlight panel", "Montaje de la cámara industrial sobre el panel de luz": "Industrial camera set up over the light panel", "Piezas a clasificar: tornillos, tuercas, arandelas, llaves Allen, gancho y placas": "Parts to classify: screws, nuts, washers, Allen keys, a hook and plates", "Piezas mecánicas usadas en las pruebas": "Mechanical parts used in the tests", "Contornos detectados sobre la imagen binarizada": "Contours detected on the binarised image", "Contornos de tornillos detectados en verde sobre la imagen binarizada": "Screw contours detected in green on the binarised image", "Identificación en tiempo real: arandela y placa de unión en L": "Real-time identification: washer and L-shaped joining plate", "Arandela y placa de unión en forma de L etiquetadas en el vídeo en directo": "Washer and L-shaped joining plate labelled in the live video", "Varias piezas a la vez: gancho, tuerca y dos tornillos": "Several parts at once: hook, nut and two screws", "Gancho, tuerca y dos tornillos etiquetados en el vídeo en directo": "Hook, nut and two screws labelled in the live video", "Placa de unión recta, tuerca y llave Allen": "Straight joining plate, nut and Allen key", "Placa de unión recta, tuerca y llave Allen etiquetadas en el vídeo en directo": "Straight joining plate, nut and Allen key labelled in the live video", "Infografía publicada en LinkedIn con las tres pruebas": "Infographic posted on LinkedIn with the three tests (in Spanish)", "Infografía del experimento: preguntas y respuestas de los modelos base, instruct y de razonamiento": "Experiment infographic: prompts and answers from the base, instruct and reasoning models", "Arquitectura: frontend Streamlit, backend Flask con API REST y MySQL": "Architecture: Streamlit frontend, Flask backend with REST API and MySQL", "Formulario de inspección de la aplicación LEMAR": "Inspection form of the LEMAR app", "Pantalla de inicio de sesión de la aplicación": "App login screen", "Diagrama de arquitectura de la aplicación": "App architecture diagram", "Datos principales": "Key details", "Foto de Victoria Carbonell Sánchez": "Photo of Victoria Carbonell Sánchez", "Foto anterior": "Previous photo", "Foto siguiente": "Next photo"};
-  var UI={es:{expand:'Desplegar todo',collapse:'Contraer todo',copy:'Copiar email',copied:'Email copiado',select:'Selecciónalo y copia',title:'Victoria Carbonell Sánchez · CV'},
-          en:{expand:'Expand all',collapse:'Collapse all',copy:'Copy email',copied:'Email copied',select:'Select it and copy',title:'Victoria Carbonell Sánchez · CV'}};
+  var UI={es:{expand:'Desplegar todo',collapse:'Contraer todo',title:'Victoria Carbonell Sánchez · CV'},
+          en:{expand:'Expand all',collapse:'Collapse all',title:'Victoria Carbonell Sánchez · CV'}};
   var SEL='main h2, main h3, main h4, main p, main li:not(.op), main .op strong, main .op .when, main .label, main .dates, main .org, main .cell-val, main .tag, main .cert span, main .lang span, main footer span, main .contact-row a';
   var lang='es';
   function T(k){return UI[lang][k];}
@@ -700,7 +684,6 @@ dialog form{display:flex; justify-content:space-between; align-items:center; gap
     galleryUpdates.forEach(function(f){f();});
     var dl=document.getElementById('cv-download');
     if(dl){ var en=(l==='en'); dl.setAttribute('href', en?'cv-victoria-carbonell-en.pdf':'cv-victoria-carbonell.pdf'); dl.setAttribute('download', en?'CV_Victoria_Carbonell_EN.pdf':'CV_Victoria_Carbonell.pdf'); }
-    if(!copyBtn.classList.contains('copied')){copyBtn.setAttribute('aria-label',T('copy')); copyBtn.title=T('copy');}
     document.documentElement.lang=l;
     document.querySelectorAll('.lang-switch button').forEach(function(b){b.setAttribute('aria-pressed', String(b.dataset.lang===l));});
     try{localStorage.setItem('cv-lang',l);}catch(e){}
