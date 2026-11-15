@@ -308,8 +308,36 @@ dialog form{display:flex; justify-content:space-between; align-items:center; gap
   </details>
 
   <details class="sec">
-    <summary><span class="sec-sum"><h2>Proyectos</h2><span class="label">3 proyectos</span></span><span class="chev">›</span></summary>
+    <summary><span class="sec-sum"><h2>Proyectos</h2><span class="label">6 proyectos</span></span><span class="chev">›</span></summary>
     <div class="sec-body">
+
+      <details class="item" id="proy-garmin">
+        <summary><h3>Conector MCP para Garmin</h3><span class="dates">nov 2026</span><span class="org">Proyecto personal · en curso</span></summary>
+        <div class="item-body">
+          <p>Servidor MCP personal y de solo lectura para que un asistente de IA como Claude consulte mis propios datos de Garmin (actividades, sueño y VFC) a través de la API personal oficial de Garmin Connect.</p>
+          <ul>
+            <li>Cuatro herramientas de consulta de actividades y salud diaria, limitadas a los endpoints que documenta Garmin.</li>
+            <li>Autorización según el estándar de MCP (OAuth), con inicio de sesión en GitHub restringido a una sola cuenta y pantalla de consentimiento.</li>
+            <li>Sin base de datos: tokens firmados, caché mínima en memoria y registros sin datos de salud.</li>
+            <li>Imagen Docker y flujos de GitHub Actions para pruebas y despliegue en Azure Container Apps. Probado con dobles de prueba; todavía sin desplegar ni usar con datos reales.</li>
+          </ul>
+          <p class="caption">Código en GitHub, publicado como muestra de mi trabajo. <a href="https://github.com/victoriacarbonell/garmin-mcp-connector" target="_blank" rel="noopener">Ver el repositorio ↗</a></p>
+          <div class="tags"><span class="tag">Python</span><span class="tag">MCP</span><span class="tag">OAuth</span><span class="tag">Docker</span><span class="tag">GitHub Actions</span><span class="tag">Azure Container Apps</span></div>
+        </div>
+      </details>
+
+      <details class="item" id="proy-skills">
+        <summary><h3>Skills para Claude</h3><span class="dates">nov 2026</span><span class="org">Repositorio abierto · licencia MIT</span></summary>
+        <div class="item-body">
+          <p>Colección de skills (instrucciones reutilizables) para Claude que creo y uso en mi trabajo, publicadas para que otros desarrolladores puedan instalarlas y adaptarlas.</p>
+          <ul>
+            <li><b>model-router</b>: en tareas grandes, el modelo de la conversación divide el trabajo, delega cada parte al modelo más barato capaz de hacerla bien y revisa el resultado, con el objetivo de reducir el consumo.</li>
+            <li>Cada skill incluye su documentación de uso, requisitos y limitaciones.</li>
+          </ul>
+          <p class="caption">Skills y documentación en GitHub. <a href="https://github.com/victoriacarbonell/claude-skills" target="_blank" rel="noopener">Ver el repositorio ↗</a></p>
+          <div class="tags"><span class="tag">Claude</span><span class="tag">Claude Code</span><span class="tag">Agentes de IA</span></div>
+        </div>
+      </details>
 
       <details class="item">
         <summary><h3>Comparativa de modelos base, instruct y de razonamiento</h3><span class="dates">nov 2026</span><span class="org">Experimento propio en Hugging Face</span></summary>
@@ -329,6 +357,21 @@ dialog form{display:flex; justify-content:space-between; align-items:center; gap
             <div class="g-foot"><span class="g-cap" aria-live="polite"></span></div>
           </div>
           <p class="caption">Pruebas exploratorias con ejemplos concretos, no un benchmark. <a href="https://www.linkedin.com/feed/update/urn:li:activity:7523410860556632066/" target="_blank" rel="noopener">Ver la publicación ↗</a></p>
+        </div>
+      </details>
+
+      <details class="item" id="proy-nutri">
+        <summary><h3>NutriApp: seguimiento de calorías y nutrición</h3><span class="dates">2026 – actualidad</span><span class="org">Proyecto personal · en curso</span></summary>
+        <div class="item-body">
+          <p>Aplicación web progresiva (PWA) pensada para el móvil que registra comidas, ejercicio y peso, y usa IA para estimar calorías y macros a partir de la foto de un plato.</p>
+          <ul>
+            <li>Registro diario por franjas de comida, base de datos de alimentos, recetas propias y escáner de códigos de barras.</li>
+            <li>Análisis de fotos y resúmenes semanales y mensuales generados con la API de OpenAI.</li>
+            <li>Frontend en React y TypeScript, backend en Express y PostgreSQL con Drizzle ORM, y API definida en OpenAPI.</li>
+            <li>Desarrollada con el agente de IA de Replit: yo definí las funcionalidades, revisé el resultado y fui iterando. Funciona en desarrollo; todavía no está publicada.</li>
+          </ul>
+          <p class="caption">Código en GitHub, publicado como muestra de mi trabajo. <a href="https://github.com/victoriacarbonell/nutri-app" target="_blank" rel="noopener">Ver el repositorio ↗</a></p>
+          <div class="tags"><span class="tag">React</span><span class="tag">TypeScript</span><span class="tag">Express</span><span class="tag">PostgreSQL</span><span class="tag">OpenAI API</span><span class="tag">PWA</span><span class="tag">Desarrollo asistido por IA</span></div>
         </div>
       </details>
 
@@ -593,7 +636,31 @@ dialog form{display:flex; justify-content:space-between; align-items:center; gap
 "Formación en la norma ISO/IEC 17025 y participación en ensayos acreditados, para entender el proceso antes de digitalizarlo.": "Training in ISO/IEC 17025 and hands-on work in accredited tests, to understand the process before digitalising it.",
 "Desarrollo de la interfaz y la lógica de negocio con Python (Flask, Streamlit), API REST y MySQL.": "Development of the interface and business logic with Python (Flask, Streamlit), a REST API and MySQL.",
 "Proyectos": "Projects",
-"3 proyectos": "3 projects",
+"6 proyectos": "6 projects",
+"NutriApp: seguimiento de calorías y nutrición": "NutriApp: calorie and nutrition tracker",
+"2026 – actualidad": "2026 – present",
+"Aplicación web progresiva (PWA) pensada para el móvil que registra comidas, ejercicio y peso, y usa IA para estimar calorías y macros a partir de la foto de un plato.": "Mobile-first progressive web app (PWA) that logs meals, exercise and weight, and uses AI to estimate calories and macros from a photo of a dish.",
+"Registro diario por franjas de comida, base de datos de alimentos, recetas propias y escáner de códigos de barras.": "Daily log by meal slot, food database, custom recipes and a barcode scanner.",
+"Análisis de fotos y resúmenes semanales y mensuales generados con la API de OpenAI.": "Photo analysis and weekly and monthly summaries generated with the OpenAI API.",
+"Frontend en React y TypeScript, backend en Express y PostgreSQL con Drizzle ORM, y API definida en OpenAPI.": "React and TypeScript frontend, Express backend and PostgreSQL with Drizzle ORM, and an API defined in OpenAPI.",
+"Desarrollada con el agente de IA de Replit: yo definí las funcionalidades, revisé el resultado y fui iterando. Funciona en desarrollo; todavía no está publicada.": "Built with Replit's AI agent: I defined the features, reviewed the output and iterated on it. It runs in development; it is not published yet.",
+"Código en GitHub, publicado como muestra de mi trabajo. <a href=\"https://github.com/victoriacarbonell/nutri-app\" target=\"_blank\" rel=\"noopener\">Ver el repositorio ↗</a>": "Code on GitHub, published as a sample of my work. <a href=\"https://github.com/victoriacarbonell/nutri-app\" target=\"_blank\" rel=\"noopener\">See the repository ↗</a>",
+"Desarrollo asistido por IA": "AI-assisted development",
+"Conector MCP para Garmin": "MCP connector for Garmin",
+"Proyecto personal · en curso": "Personal project · work in progress",
+"Servidor MCP personal y de solo lectura para que un asistente de IA como Claude consulte mis propios datos de Garmin (actividades, sueño y VFC) a través de la API personal oficial de Garmin Connect.": "Personal, read-only MCP server that lets an AI assistant like Claude read my own Garmin data (activities, sleep and HRV) through the official Garmin Connect Personal API.",
+"Cuatro herramientas de consulta de actividades y salud diaria, limitadas a los endpoints que documenta Garmin.": "Four tools to query activities and daily health, limited to the endpoints Garmin documents.",
+"Autorización según el estándar de MCP (OAuth), con inicio de sesión en GitHub restringido a una sola cuenta y pantalla de consentimiento.": "Authorization following the MCP standard (OAuth), with GitHub login restricted to a single account and a consent screen.",
+"Sin base de datos: tokens firmados, caché mínima en memoria y registros sin datos de salud.": "No database: signed tokens, a small in-memory cache and logs with no health data.",
+"Imagen Docker y flujos de GitHub Actions para pruebas y despliegue en Azure Container Apps. Probado con dobles de prueba; todavía sin desplegar ni usar con datos reales.": "Docker image and GitHub Actions workflows for tests and deployment to Azure Container Apps. Tested with fakes; not yet deployed or used with real data.",
+"Código en GitHub, publicado como muestra de mi trabajo. <a href=\"https://github.com/victoriacarbonell/garmin-mcp-connector\" target=\"_blank\" rel=\"noopener\">Ver el repositorio ↗</a>": "Code on GitHub, published as a sample of my work. <a href=\"https://github.com/victoriacarbonell/garmin-mcp-connector\" target=\"_blank\" rel=\"noopener\">See the repository ↗</a>",
+"Skills para Claude": "Skills for Claude",
+"Repositorio abierto · licencia MIT": "Open repository · MIT license",
+"Colección de skills (instrucciones reutilizables) para Claude que creo y uso en mi trabajo, publicadas para que otros desarrolladores puedan instalarlas y adaptarlas.": "A collection of skills (reusable instructions) for Claude that I build and use in my own work, published so other developers can install and adapt them.",
+"<b>model-router</b>: en tareas grandes, el modelo de la conversación divide el trabajo, delega cada parte al modelo más barato capaz de hacerla bien y revisa el resultado, con el objetivo de reducir el consumo.": "<b>model-router</b>: on large tasks, the conversation's model splits the work, delegates each part to the cheapest model that can do it well and reviews the result, with the aim of reducing usage.",
+"Cada skill incluye su documentación de uso, requisitos y limitaciones.": "Each skill comes with its own documentation on usage, requirements and limitations.",
+"Skills y documentación en GitHub. <a href=\"https://github.com/victoriacarbonell/claude-skills\" target=\"_blank\" rel=\"noopener\">Ver el repositorio ↗</a>": "Skills and documentation on GitHub. <a href=\"https://github.com/victoriacarbonell/claude-skills\" target=\"_blank\" rel=\"noopener\">See the repository ↗</a>",
+"Agentes de IA": "AI agents",
 "Código, memoria y diagramas UML en GitHub. <a href=\"https://github.com/victoriacarbonell/machine-vision-part-inspection\" target=\"_blank\" rel=\"noopener\">Ver el repositorio ↗</a>": "Code, report and UML diagrams on GitHub. <a href=\"https://github.com/victoriacarbonell/machine-vision-part-inspection\" target=\"_blank\" rel=\"noopener\">See the repository ↗</a>",
 "Inspección de piezas mediante visión artificial": "Inspecting parts with machine vision",
 "Trabajo final · Lenguajes de Programación · GITI, UPCT": "Final project · Programming Languages · Industrial Technology Engineering, UPCT",
