@@ -24,3 +24,9 @@ The design follows the look of a technical drawing: a title block at the top, th
 ## Contact
 
 [LinkedIn](https://www.linkedin.com/in/victoriacarbonellsanchez/) · [GitHub](https://github.com/victoriacarbonell)
+
+## License
+
+© Victoria Carbonell Sánchez. All rights reserved.
+
+The content of this site (text, CVs, photo and images) and its code are public as a sample of my work. No permission is granted to reuse, modify or distribute them.
