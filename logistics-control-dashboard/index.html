@@ -160,6 +160,8 @@ footer{display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; col
 dialog{border:1px solid var(--line); padding:0; max-width:min(94vw, 1400px); background:var(--sheet); color:var(--ink)}
 dialog::backdrop{background:rgba(8,15,26,.7)}
 dialog img{display:block; max-height:84vh; max-width:100%; width:auto; margin:auto}
+/* The demo GIF is smaller than the screenshots: stretch it to the dialog width so it also opens large. */
+dialog.wide img{width:min(92vw, 1400px); height:auto; object-fit:contain}
 dialog form{display:flex; justify-content:space-between; align-items:center; gap:10px; padding:10px 12px; border-top:1px solid var(--line)}
 .btn{font:500 .8rem var(--mono); letter-spacing:.03em; border:1px solid var(--line); background:var(--chip); color:var(--ink); padding:6px 10px; cursor:pointer; border-radius:3px}
 .btn:hover{border-color:var(--ink)}
@@ -233,10 +235,10 @@ dialog form{display:flex; justify-content:space-between; align-items:center; gap
 
   <figure class="demo">
     <!-- Con "reducir movimiento" activado se muestra una imagen fija en lugar del GIF. -->
-    <picture>
+    <button class="zoom" type="button" data-wide><picture>
       <source media="(prefers-reduced-motion: reduce)" srcset="../img/logistics-dashboard/demo-poster.webp" type="image/webp">
       <img src="../img/logistics-dashboard/demo.gif" width="960" height="600" alt="Demostración: se cambia el periodo, se abren las entregas retrasadas y se pliega una tarjeta" data-alt-en="Demo: changing the period, opening late deliveries and folding a card">
-    </picture>
+    </picture></button>
     <figcaption class="caption"><span lang="es">Cambio de periodo, apertura de las entregas retrasadas y plegado de una tarjeta.</span><span lang="en">Changing the period, opening late deliveries and folding a card.</span></figcaption>
   </figure>
 
@@ -426,6 +428,7 @@ dialog form{display:flex; justify-content:space-between; align-items:center; gap
     b.addEventListener('click',function(){
       var i=b.querySelector('img');
       img.src=i.currentSrc||i.src; img.alt=i.alt; cap.textContent=i.alt;
+      dlg.classList.toggle('wide', b.hasAttribute('data-wide'));
       if(dlg.showModal) dlg.showModal(); else window.open(img.src,'_blank');
     });
   });
