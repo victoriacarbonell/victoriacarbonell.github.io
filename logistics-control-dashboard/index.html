@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Logistics Control Dashboard · Módulo para Odoo 18</title>
+<meta name="description" content="Dashboard logístico para Odoo 18 Community y Enterprise: recepciones, entregas, stock, puntualidad y próximas llegadas en una pantalla. Cada cifra abre los registros que la forman.">
+<link rel="canonical" href="https://victoriacarbonell.github.io/logistics-control-dashboard/">
+<meta name="theme-color" content="#1B2433">
+<link rel="icon" href="../icons/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../icons/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://victoriacarbonell.github.io/logistics-control-dashboard/">
+<meta property="og:title" content="Logistics Control Dashboard · Odoo 18">
+<meta property="og:description" content="Logistics dashboard for Odoo 18: receipts, deliveries, stock, on-time rate and upcoming arrivals on one screen.">
+<meta property="og:image" content="https://victoriacarbonell.github.io/img/logistics-dashboard/banner.png">
+<meta property="og:image:width" content="1120">
+<meta property="og:image:height" content="560">
+<meta property="og:image:alt" content="Banner del módulo Logistics Control Dashboard para Odoo">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;700&display=swap">
+<style>
+/* Same visual language as the CV (index.html): technical drawing sheet, title block on top, notes below. */
+:root{
+  --paper:#F5F6F8; --sheet:#FFFFFF; --ink:#1B2433; --muted:#5B6475; --line:#DADDE3; --grid:rgba(27,36,51,.045); --grid-major:rgba(27,36,51,.08);
+  --accent:#E84C88; --accent-soft:rgba(232,76,136,.08); --chip:#F0F1F4; --on-ink:#F5F6F8;
+  --display:"Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  --body:"Inter", "Segoe UI", system-ui, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --paper:#121924; --sheet:#1B2433; --ink:#F5F6F8; --muted:#A7AFBD; --line:#2E394B; --grid:rgba(245,246,248,.035); --grid-major:rgba(245,246,248,.065);
+  --accent:#E84C88; --accent-soft:rgba(232,76,136,.12); --chip:#232D3E; --on-ink:#1B2433; color-scheme:dark } }
+:root[data-theme="dark"]{
+  --paper:#121924; --sheet:#1B2433; --ink:#F5F6F8; --muted:#A7AFBD; --line:#2E394B; --grid:rgba(245,246,248,.035); --grid-major:rgba(245,246,248,.065);
+  --accent:#E84C88; --accent-soft:rgba(232,76,136,.12); --chip:#232D3E; --on-ink:#1B2433; color-scheme:dark }
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background-color:var(--paper);
+  background-image:
+    linear-gradient(var(--grid-major) 1px,transparent 1px),linear-gradient(90deg,var(--grid-major) 1px,transparent 1px),
+    linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:120px 120px,120px 120px,24px 24px,24px 24px;
+  color:var(--ink); font-family:var(--body); font-size:16px; line-height:1.6;
+  padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px));
+  padding-block:32px 64px;
+}
+a{color:inherit; text-decoration-color:var(--accent); text-underline-offset:3px}
+a:hover{text-decoration-thickness:2px}
+:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:2px}
+img{max-width:100%; height:auto}
+.sheet{max-width:980px; margin:0 auto; display:grid; gap:28px}
+.mono{font-family:var(--mono); font-size:.78rem; letter-spacing:.04em}
+.label{font-family:var(--mono); font-size:.7rem; text-transform:uppercase; letter-spacing:.12em; color:var(--muted)}
+.caption{font-size:.8rem; color:var(--muted)}
+
+/* Bilingual: both languages live in the HTML; the one not in use is hidden. */
+html[lang="es"] [lang="en"], html[lang="en"] [lang="es"]{display:none !important}
+
+.topbar{display:flex; justify-content:space-between; align-items:center; gap:12px}
+.topbar a{text-decoration:none}
+.topbar a:hover{text-decoration:underline}
+.lang-switch{display:flex; border:1px solid var(--line); border-radius:3px; overflow:hidden; background:var(--sheet)}
+.lang-switch button{font:500 .72rem var(--mono); letter-spacing:.08em; padding:5px 9px; border:0; background:none; color:var(--muted); cursor:pointer}
+.lang-switch button + button{border-left:1px solid var(--line)}
+.lang-switch button[aria-pressed="true"]{background:var(--ink); color:var(--on-ink)}
+.lang-switch button:not([aria-pressed="true"]):hover{color:var(--ink)}
+
+/* Coming soon notice */
+.notice{display:flex; gap:12px; align-items:flex-start; background:var(--sheet); border:1px solid var(--line); border-left:3px solid var(--accent); padding:12px 16px}
+.notice p{margin:0}
+.notice .label{color:var(--ink); white-space:nowrap; padding-top:3px}
+
+/* Title block */
+.cajetin{background:var(--sheet); border:1.5px solid var(--ink); display:grid; grid-template-columns:repeat(4, minmax(0,1fr))}
+.cajetin > div{padding:14px 18px; border-right:1px solid var(--line); border-top:1px solid var(--line); min-width:0}
+.cajetin > div:nth-child(4n+1){border-right:0}
+.cajetin > .cell-name{grid-column:1 / -1; border-top:0; border-right:0; padding:26px 18px 22px; display:grid; grid-template-columns:96px 1fr; column-gap:22px; align-items:center}
+.app-icon{width:96px; height:96px; border-radius:14px; border:1px solid var(--line); display:block; background:#fff}
+h1{font-family:var(--display); font-weight:700; font-size:clamp(1.9rem, 5vw, 3rem); line-height:1.04; margin:4px 0 12px; letter-spacing:-.02em; text-wrap:balance}
+.thesis{font-family:var(--display); font-size:clamp(1.05rem, 2.2vw, 1.3rem); line-height:1.45; max-width:60ch; margin:0}
+.thesis em{font-style:normal; font-weight:700; background:linear-gradient(transparent 62%, var(--accent-soft) 62%); box-shadow:inset 0 -2px 0 var(--accent)}
+.cell-name .thesis{grid-column:2}
+.cta{grid-column:2; display:flex; flex-wrap:wrap; gap:10px 16px; align-items:center; margin-top:18px}
+.btn-main{display:inline-block; font:500 .85rem var(--mono); letter-spacing:.03em; text-decoration:none; background:var(--ink); color:var(--on-ink); border:1px solid var(--ink); padding:10px 16px; border-radius:3px}
+.btn-main:hover{background:var(--accent); border-color:var(--accent); color:#fff}
+.btn-main[aria-disabled="true"]{background:var(--chip); color:var(--muted); border:1px dashed var(--muted); cursor:default}
+.btn-main[aria-disabled="true"]:hover{background:var(--chip); color:var(--muted); border-color:var(--muted)}
+.cell-val{margin-top:4px; font-weight:500; overflow-wrap:anywhere}
+.cell-val code{font-family:var(--mono); font-size:.85rem}
+
+.demo{margin:0; background:var(--sheet); border:1px solid var(--line); padding:14px}
+.demo img{display:block; width:100%; height:auto; background:#fff; box-shadow:0 0 0 1px var(--line)}
+.demo figcaption{margin-top:8px}
+
+/* Sections */
+section.panel{background:var(--sheet); border:1px solid var(--line); padding:20px 18px 22px}
+.panel-head{display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:4px 16px; margin:0 0 14px}
+h2{font-family:var(--display); font-weight:700; font-size:1.3rem; letter-spacing:-.01em; margin:0}
+h3{font-family:var(--display); font-weight:700; font-size:1.04rem; margin:0 0 6px}
+p{margin:0 0 10px}
+.lead{max-width:72ch}
+ul.list{margin:0 0 10px; padding-left:1.1em}
+ul.list li{margin:5px 0}
+ul.list li::marker{color:var(--accent)}
+
+.shots{display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:18px; margin:14px 0 18px}
+.shot{margin:0}
+.shot.wide{grid-column:1 / -1}
+.zoom{display:block; width:100%; padding:0; border:0; background:none; cursor:zoom-in}
+.zoom img{display:block; width:100%; height:auto; background:#fff; box-shadow:0 0 0 1px var(--line)}
+.shot figcaption{margin-top:6px}
+
+.zones{display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:0 28px}
+.zone{padding:10px 0; border-bottom:1px dashed var(--line)}
+.zone p{margin:0}
+
+.checks{list-style:none; margin:0; padding:0; display:grid; gap:0}
+.checks li{display:grid; grid-template-columns:28px 1fr; gap:10px; padding:12px 0; border-bottom:1px dashed var(--line)}
+.checks li:last-child{border-bottom:0}
+.checks .n{font-family:var(--mono); font-size:.72rem; color:var(--accent); padding-top:3px}
+.checks p{margin:0}
+
+.features{display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:18px}
+.feature{border:1px solid var(--line); background:var(--paper); padding:14px}
+.feature p{margin:0}
+.feature .zoom{margin-top:12px}
+.feature .zoom img{max-height:360px; width:auto; max-width:100%; margin:0 auto}
+
+.steps{margin:0; padding:0; list-style:none; counter-reset:step; display:grid; gap:0}
+.steps li{counter-increment:step; display:grid; grid-template-columns:60px 1fr; gap:10px; padding:12px 0; border-bottom:1px dashed var(--line)}
+.steps li:last-child{border-bottom:0}
+.steps li::before{content:"OP " counter(step) "0"; font-family:var(--mono); font-size:.72rem; color:var(--muted); padding-top:3px}
+.steps p{margin:0}
+.install{display:grid; grid-template-columns:1.1fr 1fr; gap:24px; align-items:start}
+
+details.faq{border-bottom:1px dashed var(--line)}
+details.faq:last-child{border-bottom:0}
+details.faq > summary{list-style:none; cursor:pointer; display:flex; justify-content:space-between; gap:12px; padding:14px 0; font-family:var(--display); font-weight:700}
+details.faq > summary:hover{text-decoration:underline; text-decoration-color:var(--accent); text-underline-offset:4px}
+summary::-webkit-details-marker{display:none}
+.chev{font-family:var(--mono); color:var(--muted); transition:transform .2s}
+details[open] > summary .chev{transform:rotate(90deg)}
+.faq-body{padding:0 0 14px; max-width:72ch}
+.faq-body p:last-child{margin:0}
+
+.contact{display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); border:1px solid var(--line)}
+.contact > div{padding:14px 16px; border-right:1px solid var(--line); min-width:0}
+.contact > div:last-child{border-right:0}
+.contact .cell-val a{font-family:var(--mono); font-size:.85rem}
+.pending{font-family:var(--mono); font-size:.85rem; background:var(--accent-soft); border:1px dashed var(--accent); padding:2px 6px; border-radius:3px}
+
+footer{display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; color:var(--muted)}
+
+dialog{border:1px solid var(--line); padding:0; max-width:min(94vw, 1400px); background:var(--sheet); color:var(--ink)}
+dialog::backdrop{background:rgba(8,15,26,.7)}
+dialog img{display:block; max-height:84vh; max-width:100%; width:auto; margin:auto}
+dialog form{display:flex; justify-content:space-between; align-items:center; gap:10px; padding:10px 12px; border-top:1px solid var(--line)}
+.btn{font:500 .8rem var(--mono); letter-spacing:.03em; border:1px solid var(--line); background:var(--chip); color:var(--ink); padding:6px 10px; cursor:pointer; border-radius:3px}
+.btn:hover{border-color:var(--ink)}
+
+@media (max-width:760px){
+  .cajetin{grid-template-columns:1fr 1fr}
+  .cajetin > div:nth-child(4n+1){border-right:1px solid var(--line)}
+  .cajetin > div:nth-child(odd):not(.cell-name){border-right:0}
+  .cajetin > .cell-name{grid-template-columns:64px 1fr; column-gap:14px}
+  .app-icon{width:64px; height:64px; border-radius:10px}
+  .cell-name .thesis, .cta{grid-column:1 / -1}
+  .cell-name .thesis{margin-top:14px}
+  .shots, .zones, .features, .install{grid-template-columns:1fr}
+  .contact{grid-template-columns:1fr}
+  .contact > div{border-right:0; border-bottom:1px solid var(--line)}
+  .contact > div:last-child{border-bottom:0}
+  .notice{flex-direction:column; gap:4px}
+}
+@media (prefers-reduced-motion:reduce){ *{transition:none !important} }
+</style>
+</head>
+<body>
+
+<main class="sheet">
+
+  <nav class="topbar" aria-label="Navegación">
+    <a class="mono" href="../"><span lang="es">← Victoria Carbonell · CV</span><span lang="en">← Victoria Carbonell · CV</span></a>
+    <div class="lang-switch" role="group" aria-label="Idioma / Language"><button type="button" data-lang="es" aria-pressed="true">ES</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div>
+  </nav>
+
+  <!-- COMING-SOON: borra este bloque cuando el módulo esté publicado en la Odoo App Store. -->
+  <aside class="notice" role="note">
+    <span class="label"><span lang="es">Próximamente</span><span lang="en">Coming soon</span></span>
+    <p lang="es">El módulo todavía no está publicado. Estará disponible en la Odoo App Store muy pronto.</p>
+    <p lang="en">This module isn't published yet. It will be available on the Odoo App Store very soon.</p>
+  </aside>
+  <!-- /COMING-SOON -->
+
+  <header class="cajetin">
+    <div class="cell-name">
+      <img class="app-icon" src="../img/logistics-dashboard/icon.png" alt="" width="96" height="96">
+      <div>
+        <span class="label"><span lang="es">Módulo para Odoo 18</span><span lang="en">Odoo 18 module</span></span>
+        <h1>Logistics Control Dashboard</h1>
+      </div>
+      <p class="thesis" lang="es">Recepciones, entregas, stock, puntualidad y próximas llegadas en una sola pantalla. <em>Cada cifra abre exactamente los registros que la forman.</em></p>
+      <p class="thesis" lang="en">Receipts, deliveries, stock, on-time rate and upcoming arrivals on a single screen. <em>Every figure opens exactly the records behind it.</em></p>
+      <div class="cta">
+        <!-- TODO-APPSTORE-URL: cuando esté publicado, pon la URL de la App Store en href, quita aria-disabled y cambia el texto a "Ver en la Odoo App Store" / "View on the Odoo App Store". -->
+        <a class="btn-main" id="appstore-link" href="#" aria-disabled="true"><span lang="es">Próximamente en la Odoo App Store</span><span lang="en">Coming soon to the Odoo App Store</span></a>
+        <a class="mono" href="#soporte"><span lang="es">Soporte y contacto ↓</span><span lang="en">Support and contact ↓</span></a>
+      </div>
+    </div>
+    <div>
+      <span class="label"><span lang="es">Versión</span><span lang="en">Version</span></span>
+      <div class="cell-val">Odoo 18.0</div>
+    </div>
+    <div>
+      <span class="label"><span lang="es">Ediciones</span><span lang="en">Editions</span></span>
+      <div class="cell-val">Community · Enterprise</div>
+    </div>
+    <div>
+      <span class="label"><span lang="es">Nombre técnico</span><span lang="en">Technical name</span></span>
+      <div class="cell-val"><code>logistics_dashboard</code></div>
+    </div>
+    <div>
+      <span class="label"><span lang="es">Idiomas</span><span lang="en">Languages</span></span>
+      <div class="cell-val"><span lang="es">Español · Inglés</span><span lang="en">English · Spanish</span></div>
+    </div>
+  </header>
+
+  <figure class="demo">
+    <!-- Con "reducir movimiento" activado se muestra una imagen fija en lugar del GIF. -->
+    <picture>
+      <source media="(prefers-reduced-motion: reduce)" srcset="../img/logistics-dashboard/demo-poster.webp" type="image/webp">
+      <img src="../img/logistics-dashboard/demo.gif" width="960" height="600" alt="Demostración: se cambia el periodo, se abren las entregas retrasadas y se pliega una tarjeta" data-alt-en="Demo: changing the period, opening late deliveries and folding a card">
+    </picture>
+    <figcaption class="caption"><span lang="es">Cambio de periodo, apertura de las entregas retrasadas y plegado de una tarjeta.</span><span lang="en">Changing the period, opening late deliveries and folding a card.</span></figcaption>
+  </figure>
+
+  <section class="panel" aria-labelledby="que-muestra">
+    <div class="panel-head"><h2 id="que-muestra"><span lang="es">Qué muestra</span><span lang="en">What it shows</span></h2><span class="label"><span lang="es">Una pantalla, todo el almacén</span><span lang="en">One screen, the whole warehouse</span></span></div>
+    <p class="lead" lang="es">Lo que tu equipo de logística consulta cada mañana, reunido en un único dashboard. Y sin tener que fiarse de un número: al pulsar cualquier cifra se abre la lista de albaranes, movimientos o productos que la forman.</p>
+    <p class="lead" lang="en">Everything your logistics team checks every morning, gathered in a single dashboard. And no need to take a number on trust: click any figure and Odoo opens the list of transfers, moves or products behind it.</p>
+
+    <div class="shots">
+      <figure class="shot wide">
+        <button class="zoom" type="button"><picture><source srcset="../img/logistics-dashboard/dashboard.webp" type="image/webp"><img src="../img/logistics-dashboard/dashboard.png" width="1440" height="1030" alt="Dashboard completo con las tarjetas de recepciones, entregas, stock, puntualidad y próximas llegadas" data-alt-en="Full dashboard with the receipts, deliveries, stock, on-time and upcoming arrivals cards" loading="lazy"></picture></button>
+        <figcaption class="caption"><span lang="es">El dashboard completo.</span><span lang="en">The full dashboard.</span></figcaption>
+      </figure>
+      <figure class="shot wide">
+        <button class="zoom" type="button"><picture><source srcset="../img/logistics-dashboard/drill_down.webp" type="image/webp"><img src="../img/logistics-dashboard/drill_down.png" width="1440" height="400" alt="Lista de albaranes que se abre al pulsar una cifra del dashboard" data-alt-en="List of transfers that opens when a dashboard figure is clicked" loading="lazy"></picture></button>
+        <figcaption class="caption"><span lang="es">Al pulsar una cifra se abre exactamente la lista de registros que la forman.</span><span lang="en">Clicking a figure opens exactly the list of records behind it.</span></figcaption>
+      </figure>
+    </div>
+
+    <div class="zones">
+      <div class="zone"><h3><span lang="es">Tarjetas superiores</span><span lang="en">Top cards</span></h3><p lang="es">Recepciones y entregas pendientes y retrasadas, llegadas de esta semana e incidencias.</p><p lang="en">Pending and late receipts and deliveries, arrivals this week and issues.</p></div>
+      <div class="zone"><h3><span lang="es">Operaciones</span><span lang="en">Operations</span></h3><p lang="es">Lo que hay que hacer hoy y lo realizado en el periodo elegido.</p><p lang="en">What's due today and what was done in the selected period.</p></div>
+      <div class="zone"><h3><span lang="es">Puntualidad</span><span lang="en">On-time rate</span></h3><p lang="es">Porcentaje de entregas y recepciones a tiempo.</p><p lang="en">Percentage of deliveries and receipts on time.</p></div>
+      <div class="zone"><h3><span lang="es">Movimientos recientes</span><span lang="en">Recent moves</span></h3><p lang="es">Las últimas entradas y salidas de stock.</p><p lang="en">The latest stock moves in and out.</p></div>
+      <div class="zone"><h3><span lang="es">Stock</span><span lang="en">Stock</span></h3><p lang="es">Stock y reservado por unidad de medida y por almacén, y productos bajo mínimo.</p><p lang="en">On-hand and reserved stock by unit of measure and by warehouse, and products below minimum.</p></div>
+      <div class="zone"><h3><span lang="es">Próximas llegadas</span><span lang="en">Upcoming arrivals</span></h3><p lang="es">Qué llega y cuándo, con su pedido de compra e Incoterm.</p><p lang="en">What's arriving and when, with its purchase order and Incoterm.</p></div>
+      <div class="zone"><h3><span lang="es">Resumen</span><span lang="en">Summary</span></h3><p lang="es">Ventas por entregar, compras por recibir, devoluciones y tiempos medios.</p><p lang="en">Sales to deliver, purchases to receive, returns and average lead times.</p></div>
+      <div class="zone"><h3><span lang="es">Filtros</span><span lang="en">Filters</span></h3><p lang="es">Por almacén y por periodo: hoy, esta semana, este mes, el mes pasado, los últimos 90 días o este año. Cada usuario encuentra sus filtros como los dejó.</p><p lang="en">By warehouse and by period: today, this week, this month, last month, the last 90 days or this year. Each user finds their filters as they left them.</p></div>
+    </div>
+  </section>
+
+  <section class="panel" aria-labelledby="fiables">
+    <div class="panel-head"><h2 id="fiables"><span lang="es">Por qué las cifras son fiables</span><span lang="en">Why you can trust the figures</span></h2><span class="label"><span lang="es">Cuadra con Odoo</span><span lang="en">It adds up in Odoo</span></span></div>
+    <p class="lead" lang="es">Un dashboard solo sirve si sus números coinciden con la realidad del almacén. Estos son los casos en los que muchos informes fallan y este no:</p>
+    <p class="lead" lang="en">A dashboard is only useful if its numbers match what's really happening in the warehouse. These are the cases where many reports get it wrong, and this one doesn't:</p>
+    <ul class="checks">
+      <li><span class="n">01</span><p lang="es"><b>Cada envío cuenta una vez.</b> Si entregas en dos o tres pasos (preparación, empaquetado, salida), cuenta como una sola entrega. Las operaciones se clasifican por ubicaciones de origen y destino, no por el tipo de operación.</p><p lang="en"><b>Each shipment counts once.</b> If you deliver in two or three steps (pick, pack, ship), it counts as a single delivery. Operations are classified by source and destination locations, not by operation type.</p></li>
+      <li><span class="n">02</span><p lang="es"><b>Envíos directos, devoluciones y consigna, cada uno en su sitio.</b> Los envíos directos cuentan como entregas, las devoluciones van aparte y los traslados a un almacén de consigna no se cuentan dos veces.</p><p lang="en"><b>Dropship, returns and consignment, each in its place.</b> Dropship orders count as deliveries, returns are shown separately and transfers to a consignment warehouse aren't counted twice.</p></li>
+      <li><span class="n">03</span><p lang="es"><b>No mezcla unidades de medida.</b> Kilos, litros y unidades se muestran por separado, en lugar de sumarse en una cifra sin sentido.</p><p lang="en"><b>Units of measure are never mixed.</b> Kilograms, litres and units are shown separately instead of being added up into a meaningless total.</p></li>
+      <li><span class="n">04</span><p lang="es"><b>Respeta a cada usuario.</b> Usa su zona horaria e idioma, la multicompañía y sus permisos: cada persona ve solo lo que puede ver en Odoo.</p><p lang="en"><b>It respects each user.</b> It uses their time zone and language, multi-company and their access rights: each person only sees what they can see in Odoo.</p></li>
+      <li><span class="n">05</span><p lang="es"><b>Rápido con mucho volumen.</b> En las pruebas, cada carga tarda menos de 1 segundo con 100.000 albaranes.</p><p lang="en"><b>Fast with large volumes.</b> In testing, each load takes under 1 second with 100,000 transfers.</p></li>
+    </ul>
+  </section>
+
+  <section class="panel" aria-labelledby="funciones">
+    <div class="panel-head"><h2 id="funciones"><span lang="es">Funciones</span><span lang="en">Features</span></h2></div>
+    <div class="features">
+      <div class="feature">
+        <h3><span lang="es">Tarjetas plegables</span><span lang="en">Foldable cards</span></h3>
+        <p lang="es">Pliega las tarjetas que no necesitas y se quedarán plegadas para ese usuario.</p>
+        <p lang="en">Fold the cards you don't need and they stay folded for that user.</p>
+        <button class="zoom" type="button"><picture><source srcset="../img/logistics-dashboard/folded_cards.webp" type="image/webp"><img src="../img/logistics-dashboard/folded_cards.png" width="1440" height="975" alt="Dashboard con varias tarjetas plegadas" data-alt-en="Dashboard with several cards folded" loading="lazy"></picture></button>
+      </div>
+      <div class="feature">
+        <h3><span lang="es">También en el móvil</span><span lang="en">On your phone too</span></h3>
+        <p lang="es">Las tarjetas se colocan en cuatro, dos o una columna según la pantalla, para consultarlo también desde el móvil o la tablet.</p>
+        <p lang="en">Cards are laid out in four, two or one column depending on the screen, so you can also check it from a phone or tablet.</p>
+        <button class="zoom" type="button"><picture><source srcset="../img/logistics-dashboard/phone.webp" type="image/webp"><img src="../img/logistics-dashboard/phone.png" width="585" height="996" alt="El dashboard visto en un teléfono móvil" data-alt-en="The dashboard on a mobile phone" loading="lazy"></picture></button>
+      </div>
+      <div class="feature">
+        <h3><span lang="es">Exportación a Excel</span><span lang="en">Excel export</span></h3>
+        <p lang="es">Descarga en Excel el resumen, el stock, las incidencias, las llegadas y los movimientos.</p>
+        <p lang="en">Download the summary, stock, issues, arrivals and moves to Excel.</p>
+        <ul class="list" style="margin-top:12px">
+          <li lang="es">Refresco automático: las cifras se actualizan solas.</li>
+          <li lang="en">Auto-refresh: the figures update on their own.</li>
+          <li lang="es">Filtros de periodo y almacén que se recuerdan por usuario.</li>
+          <li lang="en">Period and warehouse filters remembered per user.</li>
+          <li lang="es">En español e inglés.</li>
+          <li lang="en">In English and Spanish.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" aria-labelledby="instalacion">
+    <div class="panel-head"><h2 id="instalacion"><span lang="es">Instalación y configuración</span><span lang="en">Installation and setup</span></h2><span class="label"><span lang="es">Unos minutos</span><span lang="en">A few minutes</span></span></div>
+    <div class="install">
+      <ol class="steps">
+        <li><p lang="es"><b>Requisitos:</b> Odoo 18 con Inventario, Ventas y Compras. Si falta alguno, se instala automáticamente con el módulo.</p><p lang="en"><b>Requirements:</b> Odoo 18 with Inventory, Sales and Purchase. If any is missing, it's installed automatically with the module.</p></li>
+        <li><p lang="es"><b>Instala el módulo</b> desde Aplicaciones, como cualquier otra app de Odoo.</p><p lang="en"><b>Install the module</b> from Apps, like any other Odoo app.</p></li>
+        <li><p lang="es"><b>Ajusta la configuración</b> en <i>Inventario › Configuración › Ajustes</i>: los días de retraso a partir de los cuales un albarán cuenta como incidencia (3 por defecto), cada cuántos minutos se refresca y si quieres ver las compras internacionales en curso (las de proveedores de fuera de tu país).</p><p lang="en"><b>Adjust the settings</b> in <i>Inventory › Configuration › Settings</i>: how many days late a transfer must be to count as an issue (3 by default), how often it refreshes and whether to show international purchases in progress (from vendors outside your country).</p></li>
+        <li><p lang="es"><b>Revisa la zona horaria</b> del contacto de tu compañía: la puntualidad se calcula con ella.</p><p lang="en"><b>Check the time zone</b> of your company's contact: on-time figures are calculated with it.</p></li>
+        <li><p lang="es"><b>Abre <i>Inventario › Dashboard</i></b> y elige periodo y almacén. Se quedarán guardados para la próxima vez. Incluye datos de demostración para probarlo.</p><p lang="en"><b>Open <i>Inventory › Dashboard</i></b> and choose a period and warehouse. They'll be saved for next time. Demo data is included so you can try it out.</p></li>
+      </ol>
+      <figure class="shot">
+        <button class="zoom" type="button"><picture><source srcset="../img/logistics-dashboard/settings.webp" type="image/webp"><img src="../img/logistics-dashboard/settings.png" width="1012" height="369" alt="Ajustes del módulo en Inventario: días para incidencia, refresco automático y compras internacionales" data-alt-en="Module settings in Inventory: days before an issue, auto-refresh and international purchases" loading="lazy"></picture></button>
+        <figcaption class="caption"><span lang="es">Ajustes del módulo en Inventario.</span><span lang="en">Module settings in Inventory.</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="panel" aria-labelledby="faq">
+    <div class="panel-head"><h2 id="faq"><span lang="es">Preguntas frecuentes</span><span lang="en">FAQ</span></h2></div>
+    <details class="faq">
+      <summary><span><span lang="es">¿Para qué versiones de Odoo está disponible?</span><span lang="en">Which Odoo versions are supported?</span></span><span class="chev" aria-hidden="true">›</span></summary>
+      <div class="faq-body">
+        <p lang="es">Por ahora, para Odoo 18.0, tanto Community como Enterprise. La versión para Odoo 19.0 llegará más adelante. En la Odoo App Store cada versión de Odoo se compra por separado.</p>
+        <p lang="en">For now, Odoo 18.0, both Community and Enterprise. An Odoo 19.0 version will follow later. On the Odoo App Store, each Odoo version is purchased separately.</p>
+      </div>
+    </details>
+    <details class="faq">
+      <summary><span><span lang="es">¿Y si no uso Ventas o Compras?</span><span lang="en">What if I don't use Sales or Purchase?</span></span><span class="chev" aria-hidden="true">›</span></summary>
+      <div class="faq-body">
+        <p lang="es">El módulo necesita Inventario, Ventas y Compras, así que Odoo instala automáticamente los que falten. No hace falta que los uses: las recepciones, las entregas, el stock y la puntualidad funcionan igual, y las cifras que salen de pedidos (ventas por entregar, compras por recibir y tiempos medios desde el pedido) se quedarán vacías.</p>
+        <p lang="es">Además, las cifras de ventas y compras solo se muestran a los usuarios que tienen acceso a esas aplicaciones.</p>
+        <p lang="en">The module needs Inventory, Sales and Purchase, so Odoo installs any that are missing. You don't have to use them: receipts, deliveries, stock and on-time performance work the same, and the figures that come from orders (sales to deliver, purchases to receive and average times from the order) will simply be empty.</p>
+        <p lang="en">Also, sales and purchase figures are only shown to users who have access to those apps.</p>
+      </div>
+    </details>
+    <details class="faq">
+      <summary><span><span lang="es">¿Por qué la puntualidad usa la fecha límite?</span><span lang="en">Why is the on-time rate based on the deadline?</span></span><span class="chev" aria-hidden="true">›</span></summary>
+      <div class="faq-body">
+        <p lang="es">Porque la fecha límite es la que se ha comprometido: en las entregas sale de la fecha de compromiso del pedido de venta y en las recepciones, de la fecha prevista del pedido de compra. La fecha programada del albarán, en cambio, se puede mover cada vez que se reprograma, y medir contra ella haría que un envío retrasado pareciera puntual.</p>
+        <p lang="es">Si un albarán no tiene fecha límite, se usa su fecha programada. Para que la puntualidad sea lo más real posible, te recomiendo usar la fecha de compromiso en los pedidos de venta.</p>
+        <p lang="en">Because the deadline is the date that was committed: for deliveries it comes from the commitment date of the sales order, and for receipts from the expected date of the purchase order. The transfer's scheduled date, on the other hand, can move every time it's rescheduled, and measuring against it would make a late shipment look on time.</p>
+        <p lang="en">If a transfer has no deadline, its scheduled date is used. For the most accurate on-time figures, use commitment dates on your sales orders.</p>
+      </div>
+    </details>
+  </section>
+
+  <section class="panel" id="soporte" aria-labelledby="soporte-h">
+    <div class="panel-head"><h2 id="soporte-h"><span lang="es">Soporte y contacto</span><span lang="en">Support and contact</span></h2></div>
+    <p class="lead" lang="es">¿Tienes una duda antes de comprarlo, un problema con la instalación o una idea de mejora? Escríbeme y te respondo personalmente. Para ayudarte antes, indica tu versión de Odoo (Community o Enterprise) y, si puedes, adjunta una captura.</p>
+    <p class="lead" lang="en">Got a question before buying, a problem installing it or an idea for an improvement? Write to me and I'll get back to you personally. To help me help you faster, tell me your Odoo version (Community or Enterprise) and attach a screenshot if you can.</p>
+    <div class="contact">
+      <div>
+        <span class="label"><span lang="es">Correo de soporte</span><span lang="en">Support email</span></span>
+        <!-- TODO-SUPPORT-EMAIL: sustituye este span por <a href="mailto:TU-CORREO">TU-CORREO</a> -->
+        <div class="cell-val"><span class="pending"><span lang="es">[correo de soporte pendiente]</span><span lang="en">[support email coming soon]</span></span></div>
+      </div>
+      <div>
+        <span class="label">LinkedIn</span>
+        <div class="cell-val"><a href="https://www.linkedin.com/in/victoriacarbonellsanchez/" target="_blank" rel="noopener">Victoria Carbonell ↗</a></div>
+      </div>
+      <div>
+        <span class="label">GitHub</span>
+        <div class="cell-val"><a href="https://github.com/victoriacarbonell" target="_blank" rel="noopener">victoriacarbonell ↗</a></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="mono"><span>Logistics Control Dashboard · <span lang="es">por</span><span lang="en">by</span> <a href="../">Victoria Carbonell Sánchez</a></span><span><span lang="es">Odoo es una marca registrada de Odoo S.A.</span><span lang="en">Odoo is a registered trademark of Odoo S.A.</span></span></footer>
+</main>
+
+<dialog id="viewer">
+  <img id="viewer-img" alt="">
+  <form method="dialog"><span class="caption" id="viewer-cap"></span><button class="btn" type="submit"><span lang="es">Cerrar</span><span lang="en">Close</span></button></form>
+</dialog>
+
+<script>
+(function(){
+  /* Language: same preference as the CV (localStorage "cv-lang", ?lang=, browser language). */
+  var META={
+    es:{title:'Logistics Control Dashboard · Módulo para Odoo 18', desc:'Dashboard logístico para Odoo 18 Community y Enterprise: recepciones, entregas, stock, puntualidad y próximas llegadas en una pantalla. Cada cifra abre los registros que la forman.'},
+    en:{title:'Logistics Control Dashboard · Odoo 18 module', desc:'Logistics dashboard for Odoo 18 Community and Enterprise: receipts, deliveries, stock, on-time rate and upcoming arrivals on one screen. Every figure opens the records behind it.'}
+  };
+  function setLang(l){
+    document.documentElement.lang=l;
+    document.title=META[l].title;
+    var d=document.querySelector('meta[name="description"]'); if(d) d.setAttribute('content',META[l].desc);
+    document.querySelectorAll('[data-alt-en]').forEach(function(e){
+      if(e.dataset.altEs===undefined) e.dataset.altEs=e.getAttribute('alt');
+      e.setAttribute('alt', l==='en'?e.dataset.altEn:e.dataset.altEs);
+    });
+    document.querySelectorAll('[data-label-en]').forEach(function(e){
+      if(e.dataset.labelEs===undefined) e.dataset.labelEs=e.getAttribute('aria-label');
+      e.setAttribute('aria-label', l==='en'?e.dataset.labelEn:e.dataset.labelEs);
+    });
+    document.querySelectorAll('.lang-switch button').forEach(function(b){b.setAttribute('aria-pressed', String(b.dataset.lang===l));});
+    try{localStorage.setItem('cv-lang',l);}catch(e){}
+  }
+  document.querySelectorAll('.lang-switch button').forEach(function(b){b.addEventListener('click',function(){setLang(b.dataset.lang);});});
+  var start='es', q=new URLSearchParams(location.search).get('lang');
+  if(q==='en'||q==='es'){start=q;}
+  else{ var saved=null; try{saved=localStorage.getItem('cv-lang');}catch(e){}
+    if(saved==='en'||saved==='es'){start=saved;} else if(!/^es\b/i.test(navigator.language||'es')){start='en';} }
+  setLang(start);
+
+  /* Disabled App Store button while the module isn't published. */
+  var store=document.getElementById('appstore-link');
+  store.addEventListener('click',function(e){ if(store.getAttribute('aria-disabled')==='true') e.preventDefault(); });
+
+  /* Screenshot viewer */
+  var dlg=document.getElementById('viewer'), img=document.getElementById('viewer-img'), cap=document.getElementById('viewer-cap');
+  document.querySelectorAll('.zoom').forEach(function(b){
+    b.addEventListener('click',function(){
+      var i=b.querySelector('img');
+      img.src=i.currentSrc||i.src; img.alt=i.alt; cap.textContent=i.alt;
+      if(dlg.showModal) dlg.showModal(); else window.open(img.src,'_blank');
+    });
+  });
+  dlg.addEventListener('click',function(e){ if(e.target===dlg) dlg.close(); });
+})();
+</script>
+
+<script>
+(function(){
+  function gc(path){ try{ if(window.goatcounter && window.goatcounter.count) window.goatcounter.count({path:path, event:true}); }catch(e){} }
+  document.addEventListener('click', function(e){
+    var a=e.target.closest('a, summary, .lang-switch button'); if(!a) return;
+    if(a.id==='appstore-link'){ gc('lcd-appstore'); return; }
+    if(a.matches('.lang-switch button')){ gc('lcd-idioma-'+a.dataset.lang); return; }
+    if(a.tagName==='SUMMARY'){ if(!a.parentElement.open) gc('lcd-faq'); return; }
+    if(a.tagName==='A' && a.hostname && a.hostname!==location.hostname){ gc('lcd-enlace-'+a.hostname.replace(/\W+/g,'-')); }
+  });
+})();
+</script>
+<script data-goatcounter="https://victoriacarbonell.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
